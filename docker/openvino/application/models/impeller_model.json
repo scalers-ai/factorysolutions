@@ -1,0 +1,12 @@
+{
+  "json_schema_version": "2.0.0",
+  "input_preproc": [
+  ],
+  "output_postproc": [
+    {
+      "converter": "raw_data_copy",
+      "layer_name" : "StatefulPartitionedCall/sequential/dense_1/Sigmoid",
+      "attribute_names": "Func/StatefulPartitionedCall/output/_11:0,Identity:0,StatefulPartitionedCall/Identity:0,StatefulPartitionedCall/sequential/dense_1/Sigmoid:0"
+    }
+  ]
+}

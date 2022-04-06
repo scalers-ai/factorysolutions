@@ -1,0 +1,63 @@
+version: '3.5'
+
+services:
+  influxdb:
+    build:
+      context: ./docker/influxdb
+    image: inteliscwestcontainerregistry.azurecr.io/influxdb:latest.5
+    hostname: influxdb
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=adminadmin
+      - DOCKER_INFLUXDB_INIT_BUCKET=Industrial_Detection_Safety
+      - DOCKER_INFLUXDB_INIT_ORG=acmeindustries
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=defect_tracking
+    ports:
+      - '8086:8086'
+
+  grafana:
+    build:
+      context: ./docker/grafana
+      args:
+        GF_INSTALL_PLUGINS: ryantxu-ajax-panel,grafana-clock-panel,grafana-simple-json-datasource,marcusolsson-dynamictext-panel
+    environment:
+      - GF_PANELS_DISABLE_SANITIZE_HTML=true
+    image: inteliscwestcontainerregistry.azurecr.io/grafana:latest.5
+
+    links:
+      - influxdb
+    ports:
+      - '3000:3000'
+    depends_on:
+      - influxdb
+
+  rtspserver:
+    build:
+      context: ./docker/simplertsp
+    image: inteliscwestcontainerregistry.azurecr.io/simplertspserver:latest.5
+    ports:
+      - '8554:8554'
+      - '8888:8888'
+
+  mosquittoserver:
+    build:
+      context: ./docker/mosquitto
+    image: inteliscwestcontainerregistry.azurecr.io/mosquitto:latest.5
+    ports:
+      - '1883:1883'
+      - '9001:9001'
+
+  industrial-safety:
+    build:
+      context: docker/openvino
+    image: industrial-safety
+    restart: on-failure
+    container_name: industrial-safety
+    ports:
+      - '4200:4200'
+      - '4201:4201'
+    depends_on:
+      - rtspserver
+      - mosquittoserver
+      - influxdb
