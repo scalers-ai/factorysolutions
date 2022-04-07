@@ -108,6 +108,24 @@
       "type": "stat"
     },
     {
+      "description": "Impeller Feed\n",
+      "gridPos": {
+        "h": 11,
+        "w": 11,
+        "x": 12,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "content": "<iframe src=\"http://localhost:8888/industrialsafety.inference\" style=\"width:100%;height:100%;\"></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "8.4.5",
+      "title": "Control Room Entry Way Feed",
+      "transparent": true,
+      "type": "text"
+    },
+    {
       "datasource": {
         "type": "influxdb",
         "uid": "PF8BBF28A9B83DA49"
@@ -252,13 +270,13 @@
     "list": []
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Industrial_Defect_Detection_Safety",
   "uid": "zLQKpk8nk",
-  "version": 3,
+  "version": 1,
   "weekStart": ""
 }
