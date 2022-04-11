@@ -1,0 +1,15 @@
+MQTTLISTENTER_ANALYTICS_SCRIPT=/application/mqttlisteners/impeller_classification_event_listener.py
+MODEL_EXPLAINER_SCRIPT=/application/modelexplainability/explain_model.py
+COORDINATES_FILE=/application/data/tripwire_coordinates.yml
+INFLUX_HOST=influxdb
+INFLUX_PORT=8086
+INDUSTRIALSAFETY_FEED_NAME=industrialsafety
+MOSQUITTOSERVER=mosquittoserver
+DEFECTDETECTION_FEED_NAME=defectdetection
+INFLUX_ORG=acmeindustries
+INFLUX_TOKEN=defect_tracking
+INFLUX_BUCKET=Industrial_Detection_Safety
+RTSPHOST=rtspserver
+RTSPPORT=8554
+INDUSTRIAL_SAFETY_MODEL_PATH=/application/models/person-detection/FP16/person-detection-retail-0013.xml
+DEVICE=CPU

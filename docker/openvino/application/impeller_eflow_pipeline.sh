@@ -75,11 +75,12 @@ echo GST_PLUGIN_PATH=${GST_PLUGIN_PATH}
 PIPELINE1="gst-launch-1.0 \
 urisourcebin uri=rtsp://$RTSPHOST:$RTSPPORT/$INDUSTRIALSAFETY_FEED_NAME ! queue ! decodebin  ! videoconvert ! \
 gvadetect model=$INDUSTRIAL_SAFETY_MODEL_PATH device=$DEVICE ! \
-gvawatermark ! gvatrack tracking-type=short-term ! queue ! \
+gvatrack tracking-type=short-term ! gvawatermark ! queue ! \
 gvametaconvert format=json json-indent=4 ! \
 gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$INDUSTRIALSAFETY_FEED_NAME ! \
-gvawatermark ! videorate ! video/x-raw,framerate=1/1 ! jpegenc ! multifilesink location=/application/resources/industrial-safety.jpg"
+jpegenc ! multifilesink location=/application/resources/industrial-safety.jpg"
 
+sleep 10
 echo ${PIPELINE1}
 tmux new -d ${PIPELINE1}
 

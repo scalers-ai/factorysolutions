@@ -15,6 +15,7 @@ from influxdb_client.client.write_api import ASYNCHRONOUS
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from datetime import datetime
 import yaml
+import time
 
 ap = argparse.ArgumentParser()
 
@@ -112,9 +113,10 @@ def init_model_explainer():
     explainer = shap.DeepExplainer(model, train_sample[0])
 
 def generate():
+    captured_frames_list = glob.glob(resources_path + "impeller-classification*.jpg")
     while True:
         # Take only most recent file.
-        captured_frames_list = glob.glob(resources_path + "impeller-classification*.jpg")
+        time.sleep(0.01)
         if captured_frames_list:
             last_generated_frame = max(captured_frames_list, key=os.path.getctime)
             if last_generated_frame is not None:
@@ -129,8 +131,9 @@ def generate():
 
 def generate_safety_feed():
     # Take only most recent file.
+    captured_frames_list = glob.glob(resources_path + "industrial-safety*.jpg")
     while True:
-        captured_frames_list = glob.glob(resources_path + "industrial-safety*.jpg")
+        time.sleep(0.01)
         if captured_frames_list:
             last_generated_frame = max(captured_frames_list, key=os.path.getctime)
             if last_generated_frame is not None:
