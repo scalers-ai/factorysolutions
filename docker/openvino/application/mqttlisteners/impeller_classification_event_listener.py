@@ -18,19 +18,24 @@ ap.add_argument("-f", "--feedname", required=True,
                 help="The actual name of the feed")
 ap.add_argument("-m", "--mqtthost", required=True,
                 help="The mqtt host name")
+ap.add_argument("-o", "--organization", required=True,
+                help="The org. against which influx data is logged")
+ap.add_argument("-t", "--token", required=True,
+                help="The influx token to read/ write data")
+ap.add_argument("-b", "--bucket", required=True,
+                help="The influx bucket to read/ write data")
 
 args = vars(ap.parse_args())
 
 # connect to influx and create a client
 IPADDRESS = args['influxdbhost']
 INFLUXDBPORT = args['influxdbport']
-INFLUXBUCKET = "Industrial_Detection_Safety"
+INFLUXBUCKET = args['bucket']
 INPUTFEED_NAME = args['feedname']
 MQTT_HOST = args['mqtthost']
 IMPELLER_INDEX = 0
-
-INFLUX_API_TOKEN='defect_tracking'
-INFLUX_ORG='acmeindustries'
+INFLUX_API_TOKEN=args['token']
+INFLUX_ORG=args['organization']
 
 MQTT_CLIENT_NAME = INPUTFEED_NAME + "-mqttclient1"
 
@@ -54,7 +59,6 @@ def on_message(client, userdata, message):
     global IMPELLER_INDEX
     logging.debug("message received " ,str(message.payload.decode("utf-8")))
     detected_vehicles_dict = json.loads(str(message.payload.decode("utf-8")))
-    timestamp  = detected_vehicles_dict['timestamp']
     for i in detected_vehicles_dict['objects']:
         detected_impeller_dict = i['detection']
         confidence = detected_impeller_dict['confidence']
@@ -62,7 +66,6 @@ def on_message(client, userdata, message):
         impeller_status = 1
         if label == 'Defective':
             impeller_status = 0
-
         data = Point("impeller_defects") \
             .tag("confidence", str(confidence)) \
             .tag("label", str(label)) \

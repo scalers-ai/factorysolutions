@@ -19,10 +19,10 @@ RUN chmod u+x /opt/intel/openvino/install_dependencies/install_openvino_dependen
 
 RUN apt -y install sudo wget nano ffmpeg
 
-RUN python3 -m pip install flask influxdb-client centroid-tracker paho-mqtt opencv-python
+RUN python3 -m pip install flask influxdb-client paho-mqtt opencv-python shap
 
 #EXPOSE 4220
 
-CMD ["bash", "-c", "source /opt/intel/openvino/bin/setupvars.sh && cd /application && ./impeller_eflow_pipeline.sh CPU rtspserver 8554 mosquittoserver /application/sample_videos/impeller.mp4"]
+CMD ["bash", "-c", "source /opt/intel/openvino/bin/setupvars.sh && cd /application && ./impeller_eflow_pipeline.sh CPU rtspserver 8554 mosquittoserver /application/sample_videos/impeller.mp4 /application/sample_videos/people-detection.mp4 defectdetection industrialsafety acmeindustries defect_tracking Industrial_Detection_Safety influxdb 8086"]
 
 #CMD ["/usr/bin/python3", "-m", "http.server", "5678"]

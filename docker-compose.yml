@@ -55,8 +55,7 @@ services:
     restart: on-failure
     container_name: industrial-safety
     ports:
-      - '4200:4200'
-      - '4201:4201'
+      - '5000:5000'
     depends_on:
       - rtspserver
       - mosquittoserver
