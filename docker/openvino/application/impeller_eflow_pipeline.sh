@@ -45,7 +45,7 @@ COORDINATES_FILE=/application/data/tripwire_coordinates.yml
 
 # start the ai explainability script
 
-nohup python3 $MODEL_EXPLAINER_SCRIPT -m /application/models/impeller-defect-custom/hdf5/casting_product_detection.hdf5 -inflxh $INFLUX_HOST -inflxp $INFLUX_PORT -f $INDUSTRIALSAFETY_FEED_NAME -mq $MOSQUITTOSERVER -o $INFLUX_ORG -t $INFLUX_TOKEN -b $INFLUX_BUCKET -cf $COORDINATES_FILE &
+tmux new -d python3 $MODEL_EXPLAINER_SCRIPT -m /application/models/impeller-defect-custom/hdf5/casting_product_detection.hdf5 -inflxh $INFLUX_HOST -inflxp $INFLUX_PORT -f $INDUSTRIALSAFETY_FEED_NAME -mq $MOSQUITTOSERVER -o $INFLUX_ORG -t $INFLUX_TOKEN -b $INFLUX_BUCKET -cf $COORDINATES_FILE
 
 sleep 10
 
@@ -60,11 +60,10 @@ gvaclassify model=$IMPELLER_DEFECT_MODEL_PATH model-proc=$IMPELLER_DEFECT_MODEL_
 gvapython module=$PYTHON_SCRIPT ! \
 gvametaconvert format=json json-indent=4 ! \
 gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$DEFECTDETECTION_FEED_NAME ! tee name=t \
-t. ! queue ! videorate ! video/x-raw,framerate=1/8 ! jpegenc ! multifilesink location=/application/resources/impeller-classification.jpg \
-t. ! queue ! gvawatermark ! x264enc ! rtspclientsink location=rtsp://$RTSPHOST:$RTSPPORT/$DEFECTDETECTION_FEED_NAME.inference protocols=udp sync=false"
+t. ! queue ! videorate ! video/x-raw,framerate=1/8 ! jpegenc ! multifilesink location=/application/resources/impeller-classification.jpg"
 
 echo ${PIPELINE2}
-nohup ${PIPELINE2} &
+tmux new -d ${PIPELINE2}
 
 
 echo Running industrial safety pipeline with the following parameters:
@@ -82,7 +81,7 @@ gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$INDUSTRIALSAFETY
 gvawatermark ! videorate ! video/x-raw,framerate=1/1 ! jpegenc ! multifilesink location=/application/resources/industrial-safety.jpg"
 
 echo ${PIPELINE1}
-nohup ${PIPELINE1} &
+tmux new -d ${PIPELINE1}
 
 sleep infinity
 

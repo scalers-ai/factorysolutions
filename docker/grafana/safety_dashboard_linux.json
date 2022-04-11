@@ -113,7 +113,7 @@
             "type": "influxdb",
             "uid": "PF8BBF28A9B83DA49"
           },
-          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"industrial_safety_tripwire\")\n  |> filter(fn: (r) => r[\"_field\"] == \"person_id\")\n  |> distinct()\n  |> group()\n  |> count()\n  |> yield(name: \"count\")",
+          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"industrial_safety_tripwire\")\n  |> filter(fn: (r) => r[\"_field\"] == \"person_id\")\n  |> distinct(column: \"person_id\")\n  |> group()\n  |> count()\n  |> yield(name: \"count\")",
           "refId": "A"
         }
       ],
@@ -180,7 +180,7 @@
             "type": "influxdb",
             "uid": "PF8BBF28A9B83DA49"
           },
-          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"industrial_safety_tripwire\")\n  |> filter(fn: (r) => r[\"_field\"] == \"status\" and r[\"_value\"] == true)\n  |> group()\n  |> count()\n  |> yield(name: \"count\")",
+          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"industrial_safety_tripwire\")\n  |> filter(fn: (r) => r[\"_field\"] == \"status\" and r[\"_value\"] == true)\n  |> distinct(column: \"person_id\")\n  |> group()\n  |> count()\n  |> yield(name: \"count\")",
           "refId": "A"
         }
       ],

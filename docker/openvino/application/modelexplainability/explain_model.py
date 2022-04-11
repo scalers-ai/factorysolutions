@@ -149,7 +149,6 @@ def generate_safety_feed():
                                           True, color, thickness)
                     encoded_image = cv2.imencode('.jpg', image_with_tripwire)
                     yield(b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + encoded_image[1].tobytes() + b'\r\n')
-                    encoded_image.close()
             else:
                 empty_image = generate_empty_image()
                 cv2.putText(img=empty_image, text='No Data', org=(150, 250), fontFace=cv2.FONT_HERSHEY_TRIPLEX,
