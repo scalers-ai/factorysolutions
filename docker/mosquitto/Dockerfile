@@ -1,4 +1,4 @@
-FROM eclipse-mosquitto:1.6
+FROM eclipse-mosquitto:latest
 
 COPY ./conf /mosquitto/config
 

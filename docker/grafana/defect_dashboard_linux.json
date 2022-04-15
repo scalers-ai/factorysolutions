@@ -59,8 +59,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PF8BBF28A9B83DA49"
+        "type": "datasource",
+        "uid": "grafana"
       },
       "fieldConfig": {
         "defaults": {
@@ -99,7 +99,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "count"
           ],
           "fields": "",
           "values": false
@@ -109,11 +109,18 @@
       "pluginVersion": "8.4.5",
       "targets": [
         {
+          "channel": "stream/telegraf/defect_detection",
           "datasource": {
-            "type": "influxdb",
-            "uid": "PF8BBF28A9B83DA49"
+            "type": "datasource",
+            "uid": "grafana"
           },
-          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"impeller_defects\" and r[\"_field\"] == \"status\")\n  |> group()\n  |> count()\n  |> yield(name: \"count\")",
+          "filter": {
+            "fields": [
+              "time",
+              "count"
+            ]
+          },
+          "queryType": "measurements",
           "refId": "A"
         }
       ],
@@ -123,14 +130,14 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PF8BBF28A9B83DA49"
+        "type": "datasource",
+        "uid": "grafana"
       },
       "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "continuous-RdYlGr"
+            "mode": "palette-classic"
           },
           "mappings": [],
           "max": 500,
@@ -144,7 +151,7 @@
               },
               {
                 "color": "red",
-                "value": 80
+                "value": 1
               }
             ]
           },
@@ -166,25 +173,26 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "allValues"
+            "lastNotNull"
           ],
           "fields": "",
-          "values": true
+          "values": false
         },
         "textMode": "auto"
       },
       "pluginVersion": "8.4.5",
       "targets": [
         {
+          "channel": "stream/telegraf/defect_detection",
           "datasource": {
-            "type": "influxdb",
-            "uid": "PF8BBF28A9B83DA49"
+            "type": "datasource",
+            "uid": "grafana"
           },
-          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"impeller_defects\" and r[\"_field\"] == \"status\" and r[\"_value\"] == 0)\n  |> count()\n  |> yield(name: \"count\")",
+          "queryType": "measurements",
           "refId": "A"
         }
       ],
-      "title": "#Defective Impellers",
+      "title": "Defect Alarm",
       "transparent": true,
       "type": "stat"
     },
@@ -222,8 +230,8 @@
     },
     {
       "datasource": {
-        "type": "influxdb",
-        "uid": "PF8BBF28A9B83DA49"
+        "type": "datasource",
+        "uid": "grafana"
       },
       "description": "",
       "fieldConfig": {
@@ -263,9 +271,9 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "lastNotNull"
           ],
-          "fields": "/^probability$/",
+          "fields": "/^accuracy telegraf$/",
           "values": false
         },
         "text": {
@@ -276,11 +284,18 @@
       "pluginVersion": "8.4.5",
       "targets": [
         {
+          "channel": "stream/telegraf/defect_accuracy",
           "datasource": {
-            "type": "influxdb",
-            "uid": "PF8BBF28A9B83DA49"
+            "type": "datasource",
+            "uid": "grafana"
           },
-          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"impeller_defect_stats\")\n  |> filter(fn: (r) => r[\"_field\"] == \"probability\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> last()\n  |> yield(name: \"mean\")",
+          "filter": {
+            "fields": [
+              "time",
+              "accuracy"
+            ]
+          },
+          "queryType": "measurements",
           "refId": "A"
         }
       ],
@@ -297,13 +312,13 @@
     "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Industrial_Defect_Detection_Linux",
+  "title": "Defect Detection - Linux",
   "uid": "zLQKpk8nk",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }

@@ -19,18 +19,18 @@ services:
   grafana:
     build:
       context: ./docker/grafana
-      args:
-        GF_INSTALL_PLUGINS: ryantxu-ajax-panel,grafana-clock-panel,grafana-simple-json-datasource,marcusolsson-dynamictext-panel
     environment:
       - GF_PANELS_DISABLE_SANITIZE_HTML=true
+      - GF_INSTALL_PLUGINS=agenty-flowcharting-panel
     image: inteliscwestcontainerregistry.azurecr.io/grafana:latest.5
-
     links:
       - influxdb
+      - telegraf
     ports:
       - '3000:3000'
     depends_on:
       - influxdb
+    hostname: grafana
 
   rtspserver:
     build:
@@ -48,6 +48,29 @@ services:
       - '1883:1883'
       - '9001:9001'
 
+  opcua:
+    build:
+      context: ./docker/opcua
+    image: opcuaserver
+    hostname: opcuaserver
+    ports:
+      - '4840:4840'
+
+  telegraf:
+    build:
+      context: ./docker/telegraf
+    image: telegraf
+    restart: on-failure
+    links:
+      - opcua
+      - mosquittoserver
+    depends_on:
+      - influxdb
+      - opcua
+      - mosquittoserver
+    ports:
+      - '5100:5100'
+
   industrial-safety:
     build:
       context: docker/openvino
@@ -60,3 +83,4 @@ services:
       - rtspserver
       - mosquittoserver
       - influxdb
+      - opcua

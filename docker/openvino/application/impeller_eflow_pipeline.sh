@@ -19,15 +19,24 @@ INFLUX_PORT=${13}
 
 IMPELLER_DEFECT_MODEL_PATH=/application/models/impeller-defect-custom/saved_model.xml
 IMPELLER_DEFECT_MODEL_PROC_PATH=/application/models/impeller_model.json
-PYTHON_SCRIPT=/application/postproc_callbacks/impeller_defects_post_process.py
+DEFECT_DETECTION_SCRIPT_PATH=/application/postproc_callbacks/impeller_defects_post_process.py
 INDUSTRIAL_SAFETY_MODEL_PATH=/application/models/person-detection/FP16/person-detection-retail-0013.xml
+IMAGE_SERVER_SCRIPT=/application/imageserver/mjpg_server.py
+INFERENCE_TIME_SCRIPT=/application/postproc_callbacks/inference_time.py
+INDUSTRIAL_SAFETY_SCRIPT_PATH=/application/postproc_callbacks/industrial_safety.py
+COORDINATES_FILE=/application/data/tripwire_coordinates.yml
 
-# strt rtsp
+# strt rtsp sim with the safety and defect feeds
 tmux new -d ffmpeg -re -stream_loop -1 -i $IMPELLERVIDEOINPUT -c copy -f rtsp -rtsp_transport tcp rtsp://$RTSPHOST:$RTSPPORT/$DEFECTDETECTION_FEED_NAME
 
 tmux new -d ffmpeg -re -stream_loop -1 -i $INDUSTRIALSAFETYVIDEOINPUT -c copy -f rtsp -rtsp_transport tcp rtsp://$RTSPHOST:$RTSPPORT/$INDUSTRIALSAFETY_FEED_NAME
 
-echo Running impeller defect detection with the following parameters:
+# start the mjpg server script
+nohup python3 $IMAGE_SERVER_SCRIPT -m /application/models/impeller-defect-custom/hdf5/casting_product_detection.hdf5 -inflxh $INFLUX_HOST -inflxp $INFLUX_PORT -f $INDUSTRIALSAFETY_FEED_NAME -d $DEFECTDETECTION_FEED_NAME -mq $MOSQUITTOSERVER -o $INFLUX_ORG -t $INFLUX_TOKEN -b $INFLUX_BUCKET -cf $COORDINATES_FILE &
+
+sleep 10
+
+echo Running impeller classification pipeline with the following parameters:
 
 export GST_PLUGIN_PATH=${dl_streamer_lib_path}:/usr/lib/x86_64-linux-gnu/gstreamer-1.0:${GST_PLUGIN_PATH}
 
@@ -35,36 +44,15 @@ echo GST_PLUGIN_PATH=${GST_PLUGIN_PATH}
 
 export GST_DEBUG=1
 
-sleep 5
-
-# start the mqtt listener
-
-MQTTLISTENTER_ANALYTICS_SCRIPT=/application/mqttlisteners/impeller_classification_event_listener.py
-MODEL_EXPLAINER_SCRIPT=/application/modelexplainability/explain_model.py
-COORDINATES_FILE=/application/data/tripwire_coordinates.yml
-
-# start the ai explainability script
-
-tmux new -d python3 $MODEL_EXPLAINER_SCRIPT -m /application/models/impeller-defect-custom/hdf5/casting_product_detection.hdf5 -inflxh $INFLUX_HOST -inflxp $INFLUX_PORT -f $INDUSTRIALSAFETY_FEED_NAME -mq $MOSQUITTOSERVER -o $INFLUX_ORG -t $INFLUX_TOKEN -b $INFLUX_BUCKET -cf $COORDINATES_FILE
-
-sleep 10
-
-tmux new -d python3 $MQTTLISTENTER_ANALYTICS_SCRIPT -inflxh $INFLUX_HOST -inflxp $INFLUX_PORT -f $DEFECTDETECTION_FEED_NAME -m $MOSQUITTOSERVER -o $INFLUX_ORG -t $INFLUX_TOKEN -b $INFLUX_BUCKET
-
-echo Running impeller classification pipeline with the following parameters:
-
 PIPELINE2="gst-launch-1.0 \
-urisourcebin uri=rtsp://$RTSPHOST:$RTSPPORT/$DEFECTDETECTION_FEED_NAME ! \
-queue ! decodebin  ! videoconvert ! \
+rtspsrc location=rtsp://$RTSPHOST:$RTSPPORT/$DEFECTDETECTION_FEED_NAME ! decodebin  ! videoconvert ! video/x-raw,format=BGRx ! \
 gvaclassify model=$IMPELLER_DEFECT_MODEL_PATH model-proc=$IMPELLER_DEFECT_MODEL_PROC_PATH device=$DEVICE inference-region=full-frame ! \
-gvapython module=$PYTHON_SCRIPT ! \
-gvametaconvert format=json json-indent=4 ! \
-gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$DEFECTDETECTION_FEED_NAME ! tee name=t \
-t. ! queue ! videorate ! video/x-raw,framerate=1/8 ! jpegenc ! multifilesink location=/application/resources/impeller-classification.jpg"
+gvapython module=$DEFECT_DETECTION_SCRIPT_PATH class=DefectDetection ! \
+gvametaconvert format=json add-tensor-data=true ! \
+gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$DEFECTDETECTION_FEED_NAME"
 
 echo ${PIPELINE2}
-tmux new -d ${PIPELINE2}
-
+nohup ${PIPELINE2} &
 
 echo Running industrial safety pipeline with the following parameters:
 
@@ -73,16 +61,18 @@ export GST_PLUGIN_PATH=${dl_streamer_lib_path}:/usr/lib/x86_64-linux-gnu/gstream
 echo GST_PLUGIN_PATH=${GST_PLUGIN_PATH}
 
 PIPELINE1="gst-launch-1.0 \
-urisourcebin uri=rtsp://$RTSPHOST:$RTSPPORT/$INDUSTRIALSAFETY_FEED_NAME ! queue ! decodebin  ! videoconvert ! \
-gvadetect model=$INDUSTRIAL_SAFETY_MODEL_PATH device=$DEVICE ! \
-gvatrack tracking-type=short-term ! gvawatermark ! queue ! \
-gvametaconvert format=json json-indent=4 ! \
-gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$INDUSTRIALSAFETY_FEED_NAME ! \
-jpegenc ! multifilesink location=/application/resources/industrial-safety.jpg"
+rtspsrc location=rtsp://$RTSPHOST:$RTSPPORT/$INDUSTRIALSAFETY_FEED_NAME ! decodebin  ! videoconvert ! video/x-raw,format=BGRx ! \
+gvapython module=$INFERENCE_TIME_SCRIPT class=InferenceTime ! \
+gvadetect model=$INDUSTRIAL_SAFETY_MODEL_PATH device=$DEVICE inference-interval=1 ! \
+gvapython module=$INDUSTRIAL_SAFETY_SCRIPT_PATH class=TripWire ! \
+gvametaconvert format=json add-tensor-data=true ! \
+gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$INDUSTRIALSAFETY_FEED_NAME"
 
 sleep 10
+
 echo ${PIPELINE1}
-tmux new -d ${PIPELINE1}
+nohup ${PIPELINE1} &
+
 
 sleep infinity
 

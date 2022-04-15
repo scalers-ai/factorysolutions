@@ -1,0 +1,4 @@
+numpy==1.21.3
+paho-mqtt==1.6.1
+flask==2.0.2
+azure-iot-device==2.9.0
