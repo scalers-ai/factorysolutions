@@ -5,6 +5,7 @@ import io
 import numpy as np
 import base64
 from opcua import Client
+import paho.mqtt.client as mqtt
 import shap
 import cv2
 import matplotlib.pyplot as plt
@@ -21,10 +22,21 @@ DETECT_THRESHOLD = 0.5
 Gst.init(sys.argv)
 
 class DefectDetection:
-    """Trip wire detection """
+    """Defect detection """
     def __init__(self) -> None:
         self.initialize_defectdetection()
         self.client = self.connect_opcua()
+        self.mqtt_client = self.connect_mqtt()
+
+    def connect_mqtt(self) -> mqtt.Client:
+        """
+        Connect to MQTT broker
+
+        :returns mqtt.Client
+        """
+        mqtt_client = mqtt.Client()
+        mqtt_client.connect("mosquittoserver", 1883, 60)
+        return mqtt_client
 
     def connect_opcua(self):
         """Connect to opcua server
@@ -97,9 +109,9 @@ class DefectDetection:
         """
         with frame.data() as mat:
             current_frame = mat.copy()
-            grayed = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY).reshape(1, *self.image_shape) / 255
-            self.infer_explain_frame(grayed, frame).getvalue()
-
+            grayed = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)\
+                         .reshape(1, *self.image_shape) / 255
+            self.infer_explain_frame(grayed, frame)
         return True
 
     def infer_explain_frame(self, image, frame):
@@ -130,11 +142,10 @@ class DefectDetection:
             "stream": "defectdetection",
             "impeller_status": predicted_label,
             "accuracy": prob,
-            "defects": 1,
-            "fps": "30",
+            "defects": defects,
             "image": self.encode_frame(image_cv)
         }
         self.set_opcua_values(defects, prob)
         plt.close()
-        frame.add_message(json.dumps(infer_metadata))
+        self.mqtt_client.publish("defectdetection", json.dumps(infer_metadata))
         return buf

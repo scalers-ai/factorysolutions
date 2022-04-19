@@ -47,20 +47,7 @@ export GST_DEBUG=1
 PIPELINE2="gst-launch-1.0 \
 rtspsrc location=rtsp://$RTSPHOST:$RTSPPORT/$DEFECTDETECTION_FEED_NAME ! decodebin  ! videoconvert ! video/x-raw,format=BGRx ! \
 gvaclassify model=$IMPELLER_DEFECT_MODEL_PATH model-proc=$IMPELLER_DEFECT_MODEL_PROC_PATH device=$DEVICE inference-region=full-frame ! \
-gvapython module=$DEFECT_DETECTION_SCRIPT_PATH class=DefectDetection ! \
-gvametaconvert format=json add-tensor-data=true ! \
-gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$DEFECTDETECTION_FEED_NAME"
-
-echo ${PIPELINE2}
-tmux new -d  ${PIPELINE2}
-
-echo Running industrial safety pipeline with the following parameters:
-
-export GST_PLUGIN_PATH=${dl_streamer_lib_path}:/usr/lib/x86_64-linux-gnu/gstreamer-1.0:${GST_PLUGIN_PATH}
-
-echo GST_PLUGIN_PATH=${GST_PLUGIN_PATH}
-
-PIPELINE1="gst-launch-1.0 \
+gvapython module=$DEFECT_DETECTION_SCRIPT_PATH class=DefectDetection \
 rtspsrc location=rtsp://$RTSPHOST:$RTSPPORT/$INDUSTRIALSAFETY_FEED_NAME ! decodebin  ! videoconvert ! video/x-raw,format=BGRx ! \
 gvapython module=$INFERENCE_TIME_SCRIPT class=InferenceTime ! \
 gvadetect model=$INDUSTRIAL_SAFETY_MODEL_PATH device=$DEVICE inference-interval=1 ! \
@@ -68,10 +55,8 @@ gvapython module=$INDUSTRIAL_SAFETY_SCRIPT_PATH class=TripWire ! \
 gvametaconvert format=json add-tensor-data=true ! \
 gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$INDUSTRIALSAFETY_FEED_NAME"
 
-sleep 10
-
-echo ${PIPELINE1}
-tmux new -d  ${PIPELINE1}
+echo ${PIPELINE2}
+nohup  ${PIPELINE2} &
 
 
 sleep infinity

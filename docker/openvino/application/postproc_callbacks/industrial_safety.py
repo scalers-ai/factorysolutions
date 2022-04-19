@@ -94,7 +94,8 @@ class TripWire:
         fps = 1 / inference_time
         for message in frame.messages():
             frame.remove_message(message)
-        # generate encoded image with impeller classification heatmap.
+        # generate encoded image with tripwire detections.
+        violations = 0
         with frame.data() as mat:
             current_frame = mat.copy()
             color = (0, 255, 0)
@@ -103,7 +104,6 @@ class TripWire:
                 pts = np.array(tripwire['coordinates'], np.int32)
                 polygon = Polygon(tripwire['coordinates'])
                 persons = []
-                violations = 0
                 for roi in frame.regions():
                     rect = roi.rect()
                     persons.append([rect.x, rect.y, rect.x + rect.w, rect.y + rect.h])
@@ -114,7 +114,7 @@ class TripWire:
                         # red if tripwire tripped else green
                         inside_tripwire = polygon.contains(point1)
                         if inside_tripwire:
-                            violations = violations+1
+                            violations = 1
                             color = (0, 0, 255)
                         else:
                             color = (0, 255, 0)
@@ -128,6 +128,5 @@ class TripWire:
                     "image": self.encode_frame(current_frame)
                 }
                 self.set_opcua_values(violations, fps)
-                violations = 0
                 frame.add_message(json.dumps(infer_metadata))
         return True
