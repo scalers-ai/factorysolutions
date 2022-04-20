@@ -1,5 +1,8 @@
 FROM grafana/grafana-oss
 
+ENV GF_PANELS_DISABLE_SANITIZE_HTML=true
+ENV GF_INSTALL_PLUGINS=agenty-flowcharting-panel
+
 COPY datasource.yml /etc/grafana/provisioning/datasources/datasource.yml
 COPY dashboard.yml /etc/grafana/provisioning/dashboards/datasource.yml
 
@@ -7,7 +10,6 @@ COPY defect_dashboard_linux.json /etc/dashboards/defect_dashboard_linux.json
 COPY safety_dashboard_linux.json /etc/dashboards/safety_dashboard_linux.json
 COPY defect_dashboard_windows.json /etc/dashboards/defect_dashboard_windows.json
 COPY safety_dashboard_windows.json /etc/dashboards/safety_dashboard_windows.json
-
 
 
 EXPOSE 3000

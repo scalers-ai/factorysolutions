@@ -4,25 +4,15 @@ services:
   influxdb:
     build:
       context: ./docker/influxdb
-    image: inteliscwestcontainerregistry.azurecr.io/influxdb:latest.5
+    image: industrialsafetyanddefectdetectionregistry.azurecr.io/influxdb:latest
     hostname: influxdb
-    environment:
-      - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=adminadmin
-      - DOCKER_INFLUXDB_INIT_BUCKET=Industrial_Detection_Safety
-      - DOCKER_INFLUXDB_INIT_ORG=acmeindustries
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=defect_tracking
     ports:
       - '8086:8086'
 
   grafana:
     build:
       context: ./docker/grafana
-    environment:
-      - GF_PANELS_DISABLE_SANITIZE_HTML=true
-      - GF_INSTALL_PLUGINS=agenty-flowcharting-panel
-    image: inteliscwestcontainerregistry.azurecr.io/grafana:latest.5
+    image: industrialsafetyanddefectdetectionregistry.azurecr.io/grafana:latest
     links:
       - influxdb
       - telegraf
@@ -35,7 +25,7 @@ services:
   rtspserver:
     build:
       context: ./docker/simplertsp
-    image: inteliscwestcontainerregistry.azurecr.io/simplertspserver:latest.5
+    image: industrialsafetyanddefectdetectionregistry.azurecr.io/simplertspserver:latest
     ports:
       - '8554:8554'
       - '8888:8888'
@@ -43,7 +33,7 @@ services:
   mosquittoserver:
     build:
       context: ./docker/mosquitto
-    image: inteliscwestcontainerregistry.azurecr.io/mosquitto:latest.5
+    image: industrialsafetyanddefectdetectionregistry.azurecr.io/mosquitto:latest.5
     ports:
       - '1883:1883'
       - '9001:9001'
@@ -51,7 +41,7 @@ services:
   opcua:
     build:
       context: ./docker/opcua
-    image: opcuaserver
+    image: industrialsafetyanddefectdetectionregistry.azurecr.io/opcuaserver:latest
     hostname: opcuaserver
     ports:
       - '4840:4840'
@@ -59,7 +49,7 @@ services:
   telegraf:
     build:
       context: ./docker/telegraf
-    image: telegraf
+    image: industrialsafetyanddefectdetectionregistry.azurecr.io/telegraf:latest
     restart: on-failure
     links:
       - opcua
@@ -74,7 +64,7 @@ services:
   industrial-safety:
     build:
       context: docker/openvino
-    image: industrial-safety
+    image: industrialsafetyanddefectdetectionregistry.azurecr.io/industrial-safety:latest
     restart: on-failure
     container_name: industrial-safety
     ports:
