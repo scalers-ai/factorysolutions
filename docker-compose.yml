@@ -22,7 +22,7 @@ services:
       - influxdb
     hostname: grafana
 
-  rtspserver:
+  simplertspserver:
     build:
       context: ./docker/simplertsp
     image: industrialsafetyanddefectdetectionregistry.azurecr.io/simplertspserver:latest
@@ -33,7 +33,7 @@ services:
   mosquittoserver:
     build:
       context: ./docker/mosquitto
-    image: industrialsafetyanddefectdetectionregistry.azurecr.io/mosquitto:latest.5
+    image: industrialsafetyanddefectdetectionregistry.azurecr.io/mosquitto:latest
     ports:
       - '1883:1883'
       - '9001:9001'
@@ -70,7 +70,7 @@ services:
     ports:
       - '5000:5000'
     depends_on:
-      - rtspserver
+      - simplertspserver
       - mosquittoserver
       - influxdb
       - opcua

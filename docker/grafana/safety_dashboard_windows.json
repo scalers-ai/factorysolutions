@@ -21,7 +21,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -392,7 +392,7 @@
       },
       "id": 10,
       "options": {
-        "content": "<h1>INTEL GPU",
+        "content": "<span align='center'><h1>INTEL GPU</span>",
         "mode": "html"
       },
       "pluginVersion": "8.4.6",
@@ -631,6 +631,6 @@
   "timezone": "",
   "title": "Safety Dashboard - Windows",
   "uid": "EdgeUiWin",
-  "version": 4,
+  "version": 2,
   "weekStart": ""
 }

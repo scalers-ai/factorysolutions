@@ -1,0 +1,155 @@
+{
+    "$schema-template": "4.0.0",
+    "modulesContent": {
+      "$edgeAgent": {
+        "properties.desired": {
+          "modules": {
+            "influxdb": {
+              "settings": {
+                "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/influxdb:latest",
+                "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"8086/tcp\":[{\"HostPort\":\"8086\"}]}}}"
+              },
+              "type": "docker",
+              "version": "1.0",
+              "status": "running",
+              "restartPolicy": "always",
+              "startupOrder": 1
+            },
+            "grafana": {
+              "settings": {
+                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/grafana:latest.1",
+                  "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"3000/tcp\":[{\"HostPort\":\"3000\"}]}}}"
+              },
+              "type": "docker",
+              "version": "1.0",
+              "status": "running",
+              "restartPolicy": "always",
+              "startupOrder": 2
+            },
+            "simplertspserver": {
+              "settings": {
+                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/simplertspserver:latest",
+                  "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"8554/tcp\":[{\"HostPort\":\"8554\"}],\"8888/tcp\":[{\"HostPort\":\"8888\"}]}}}"
+              },
+              "type": "docker",
+              "version": "1.0",
+              "status": "running",
+              "restartPolicy": "always",
+              "startupOrder": 3
+            },
+            "mosquittoserver": {
+              "settings": {
+                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/mosquitto:latest",
+                  "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"1883/tcp\":[{\"HostPort\":\"1883\"}],\"9001/tcp\":[{\"HostPort\":\"9001\"}]}}}"
+              },
+              "type": "docker",
+              "version": "1.0",
+              "status": "running",
+              "restartPolicy": "always",
+              "startupOrder": 4
+            },
+            "opcuaserver": {
+              "settings": {
+                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/opcuaserver:latest",
+                  "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"4840/tcp\":[{\"HostPort\":\"4840\"}]}}}"
+              },
+              "type": "docker",
+              "version": "1.0",
+              "status": "running",
+              "restartPolicy": "always",
+              "startupOrder": 5
+            },
+            "telegraf": {
+              "settings": {
+                "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/telegraf:latest",
+                "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5100/tcp\":[{\"HostPort\":\"5100\"}]}}}"
+              },
+              "type": "docker",
+              "version": "1.0",
+              "status": "running",
+              "restartPolicy": "always",
+              "startupOrder": 6
+            },
+            "industrial-safety": {
+              "settings": {
+                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/industrial-safety:latest",
+                  "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5000/tcp\":[{\"HostPort\":\"5000\"}]}, \"CapAdd\":[\"CAP_SYS_ADMIN\"],\"Binds\":[\"/usr/lib/wsl:/usr/lib/wsl\"],\"Devices\":[{\"PathOnHost\":\"/dev/dxg\",\"PathInContainer\":\"/dev/dxg\",\"CgroupPermissions\":\"rwm\"}]}}"
+              },
+              "type": "docker",
+              "version": "1.0",
+              "status": "running",
+              "restartPolicy": "always",
+              "startupOrder": 7
+          }
+            
+          },
+          "runtime": {
+            "settings": {
+              "minDockerVersion": "v1.25",
+              "registryCredentials": {
+                "industrialsafety": {
+                  "username": "$CONTAINER_REGISTRY_USERNAME",
+                  "password": "$CONTAINER_REGISTRY_PASSWORD",
+                  "address": "$CONTAINER_REGISTRY_USERNAME.azurecr.io"
+                }
+              }
+            },
+            "type": "docker"
+          },
+          "schemaVersion": "1.1",
+          "systemModules": {
+            "edgeAgent": {
+              "settings": {
+                "image": "mcr.microsoft.com/azureiotedge-agent:1.1",
+                "createOptions": ""
+              },
+              "type": "docker"
+            },
+            "edgeHub": {
+              "settings": {
+                "image": "mcr.microsoft.com/azureiotedge-hub:1.1",
+                "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"443/tcp\":[{\"HostPort\":\"443\"}],\"5671/tcp\":[{\"HostPort\":\"5671\"}],\"8883/tcp\":[{\"HostPort\":\"8883\"}]}}}"
+              },
+              "type": "docker",
+              "status": "running",
+              "restartPolicy": "always"
+            }
+          }
+        }
+      },
+      "$edgeHub": {
+        "properties.desired": {
+          "routes": {
+            "route": "FROM /messages/* INTO $upstream",
+            "mosquittoToIoTHub": "FROM /messages/modules/mosquitto/outputs/* INTO $upstream",
+            "influxdb1ToIoTHub": "FROM /messages/modules/influxdb1/outputs/* INTO $upstream"
+          },
+          "schemaVersion": "1.1",
+          "storeAndForwardConfiguration": {
+            "timeToLiveSecs": 7200
+          }
+        }
+      },
+      "influxdb": {
+        "properties.desired": {}
+      },
+      "grafana": {
+        "properties.desired": {}
+      },
+      "simplertspserver": {
+        "properties.desired": {}
+      },
+      "mosquittoserver": {
+        "properties.desired": {}
+      },
+      "opcuaserver": {
+        "properties.desired": {}
+      },
+      "telegraf": {
+        "properties.desired": {}
+      },
+      "industrial-safety": {
+        "properties.desired": {}
+      }
+    }
+  }

@@ -23,6 +23,6 @@ RUN python3 -m pip install flask influxdb-client paho-mqtt opencv-python shap op
 
 EXPOSE 5000
 
-CMD ["bash", "-c", "source /opt/intel/openvino/bin/setupvars.sh && cd /application && ./impeller_eflow_pipeline.sh CPU rtspserver 8554 mosquittoserver /application/sample_videos/impeller.mp4 /application/sample_videos/people-detection.mp4 defectdetection industrialsafety acmeindustries defect_tracking Industrial_Detection_Safety influxdb 8086"]
+CMD ["bash", "-c", "source /opt/intel/openvino/bin/setupvars.sh && cd /application && ./impeller_eflow_pipeline.sh CPU simplertspserver 8554 mosquittoserver /application/sample_videos/impeller.mp4 /application/sample_videos/people-detection.mp4 defectdetection industrialsafety acmeindustries defect_tracking Industrial_Detection_Safety influxdb 8086"]
 
 #CMD ["/usr/bin/python3", "-m", "http.server", "5678"]

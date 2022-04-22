@@ -18,7 +18,5 @@ COPY src/telegraf.conf /etc/telegraf/
 RUN pip3 install -r requirements.txt
 
 EXPOSE 5100/tcp
-EXPOSE 3000
-EXPOSE 1883
 
 ENTRYPOINT ["/bin/bash", "/entrypoint.sh", "telegraf"]

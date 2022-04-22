@@ -21,8 +21,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
-  "iteration": 1650359822620,
+  "id": 4,
+  "iteration": 1650618649805,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -364,7 +364,7 @@
       },
       "id": 46,
       "options": {
-        "content": "<h1>INTEL GPU",
+        "content": "<span align='center'><h1>INTEL GPU</span>",
         "mode": "html"
       },
       "pluginVersion": "8.4.6",
@@ -557,6 +557,6 @@
   "timezone": "",
   "title": "Defect Detection - Windows",
   "uid": "RTGUILINUX",
-  "version": 11,
+  "version": 2,
   "weekStart": ""
 }
