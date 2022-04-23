@@ -30,7 +30,7 @@ class TripWire:
 
         :returns client: opcua client object
         """
-        opcua_url = "opc.tcp://opcua:4840"
+        opcua_url = "opc.tcp://opcuaserver:4840"
         client = Client(opcua_url)
         client.connect()
 
