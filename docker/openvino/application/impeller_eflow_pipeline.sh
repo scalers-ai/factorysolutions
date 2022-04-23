@@ -56,7 +56,7 @@ gvametaconvert format=json add-tensor-data=true ! \
 gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$INDUSTRIALSAFETY_FEED_NAME"
 
 echo ${PIPELINE2}
-nohup  ${PIPELINE2} &
+tmux new -d  ${PIPELINE2}
 
 
 sleep infinity
