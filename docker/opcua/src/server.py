@@ -27,12 +27,14 @@ async def start_opcua_server():
 
     defect_detection = await node.add_variable(addspace, "defect_detection", 1)
     defect_accuracy =  await node.add_variable(addspace, "defect_accuracy", 1.1)
+    defect_fps =  await node.add_variable(addspace, "defect_fps", 1.2)
 
     # set parameters to writable
     await safety_violation.set_writable()
     await safety_fps.set_writable()
     await defect_detection.set_writable()
     await defect_accuracy.set_writable()
+    await defect_fps.set_writable()
 
     print("Server started at {}".format(url))
     async with server:

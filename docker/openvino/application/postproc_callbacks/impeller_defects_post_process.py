@@ -1,6 +1,7 @@
 import sys
 import gi
 import json
+import time
 import io
 import numpy as np
 import base64
@@ -49,7 +50,7 @@ class DefectDetection:
 
         return client
 
-    def set_opcua_values(self, violation: int, accuracy: float) -> None:
+    def set_opcua_values(self, violation: int, accuracy: float, fps: float) -> None:
         """Set inference results to opcua variables
 
         :param weld_class: Weld Class detected
@@ -61,10 +62,12 @@ class DefectDetection:
         # get variables
         defect_detections = self.client.get_node("ns=2;i=4")
         defect_accuracy = self.client.get_node("ns=2;i=5")
+        defect_fps = self.client.get_node("ns=2;i=6")
 
         # set values to the variables
         defect_detections.set_value(violation)
         defect_accuracy.set_value(accuracy)
+        defect_fps.set_value(fps)
 
     def get_target_hardware(self):
         """Read target hardware of the pipeline from
@@ -118,14 +121,20 @@ class DefectDetection:
 
         :returns bool
         """
+        # calculate FPS
+        data = json.loads(frame.messages()[0])['time']
+        inference_time = time.time() - float(data)
+        fps = 1 / inference_time
+        for message in frame.messages():
+            frame.remove_message(message)
         with frame.data() as mat:
             current_frame = mat.copy()
             grayed = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)\
                          .reshape(1, *self.image_shape) / 255
-            self.infer_explain_frame(grayed, frame)
+            self.infer_explain_frame(grayed, frame, fps)
         return True
 
-    def infer_explain_frame(self, image, frame):
+    def infer_explain_frame(self, image, frame, fps):
         image = image.reshape(1, *self.image_shape)
         prediction = self.model.predict(image)
         predicted_label = None
@@ -154,10 +163,11 @@ class DefectDetection:
             "impeller_status": predicted_label,
             "accuracy": prob,
             "defects": defects,
-            "image": self.encode_frame(image_cv),
-            "target" : self.get_target_hardware()
+            "target" : self.get_target_hardware(),
+            "fps" : fps,
+            "image": self.encode_frame(image_cv)
         }
-        self.set_opcua_values(defects, prob)
+        self.set_opcua_values(defects, prob, fps)
         plt.close()
         self.mqtt_client.publish("defectdetection", json.dumps(infer_metadata))
         return buf

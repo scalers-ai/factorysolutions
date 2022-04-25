@@ -54,6 +54,7 @@ export GST_DEBUG=1
 
 PIPELINE2="gst-launch-1.0 \
 rtspsrc location=rtsp://$RTSPHOST:$RTSPPORT/$DEFECTDETECTION_FEED_NAME ! decodebin  ! videoconvert ! video/x-raw,format=BGRx ! \
+gvapython module=$INFERENCE_TIME_SCRIPT class=InferenceTime ! \
 gvaclassify model=$IMPELLER_DEFECT_MODEL_PATH model-proc=$IMPELLER_DEFECT_MODEL_PROC_PATH device=$DEVICE inference-region=full-frame ! \
 gvapython module=$DEFECT_DETECTION_SCRIPT_PATH class=DefectDetection \
 rtspsrc location=rtsp://$RTSPHOST:$RTSPPORT/$INDUSTRIALSAFETY_FEED_NAME ! decodebin  ! videoconvert ! video/x-raw,format=BGRx ! \

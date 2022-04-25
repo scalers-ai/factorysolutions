@@ -21,8 +21,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
-  "iteration": 1650618649805,
+  "id": 2,
+  "iteration": 1650870832655,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -299,6 +299,73 @@
             "mode": "absolute",
             "steps": [
               {
+                "color": "transparent",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 11
+      },
+      "id": 47,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^defectfps telegraf$/",
+          "values": false
+        },
+        "text": {
+          "valueSize": 50
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.6",
+      "targets": [
+        {
+          "channel": "stream/telegraf/defect_fps",
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "filter": {
+            "fields": [
+              "defectfps"
+            ]
+          },
+          "queryType": "measurements",
+          "refId": "A"
+        }
+      ],
+      "title": "Defect Detection Model FPS",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
                 "color": "green",
                 "value": null
               },
@@ -314,7 +381,7 @@
       "gridPos": {
         "h": 5,
         "w": 4,
-        "x": 0,
+        "x": 4,
         "y": 11
       },
       "id": 40,
@@ -359,7 +426,7 @@
       "gridPos": {
         "h": 5,
         "w": 4,
-        "x": 4,
+        "x": 8,
         "y": 11
       },
       "id": 46,
@@ -428,8 +495,8 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 16,
-        "x": 8,
+        "w": 12,
+        "x": 12,
         "y": 11
       },
       "id": 44,
@@ -557,6 +624,6 @@
   "timezone": "",
   "title": "Defect Detection - Windows",
   "uid": "RTGUILINUX",
-  "version": 2,
+  "version": 7,
   "weekStart": ""
 }

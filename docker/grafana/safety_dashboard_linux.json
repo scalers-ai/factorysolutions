@@ -65,7 +65,35 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "continuous-GrYlRd"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -85,28 +113,24 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 6,
+        "h": 10,
+        "w": 10,
         "x": 14,
         "y": 0
       },
       "id": 40,
       "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
+        "legend": {
           "calcs": [
-            "last"
+            "sum"
           ],
-          "fields": "",
-          "values": false
+          "displayMode": "list",
+          "placement": "bottom"
         },
-        "text": {
-          "valueSize": 50
-        },
-        "textMode": "auto"
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "pluginVersion": "8.4.6",
       "targets": [
@@ -115,12 +139,13 @@
             "type": "influxdb",
             "uid": "PF8BBF28A9B83DA49"
           },
-          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"safety_count\")\n  |> filter(fn: (r) => r[\"_field\"] == \"count\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> sum()\n  |> yield(name: \"sum\")",
+          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"industrial-safety-stream\")\n  |> filter(fn: (r) => r[\"_field\"] == \"person_count\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
-      "title": "Total Detections",
-      "type": "stat"
+      "title": "Person Detection Trend",
+      "transparent": true,
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -130,7 +155,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
           "decimals": 0,
           "mappings": [],
@@ -143,7 +168,7 @@
               },
               {
                 "color": "red",
-                "value": 80
+                "value": 1
               }
             ]
           },
@@ -152,10 +177,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 6,
+        "h": 6,
+        "w": 3,
         "x": 14,
-        "y": 6
+        "y": 10
       },
       "id": 7,
       "options": {
@@ -165,9 +190,9 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "sum"
+            "lastNotNull"
           ],
-          "fields": "/^count telegraf$/",
+          "fields": "/^violations \\{host=\"telegraf\", stream=\"industrialsafety\"\\}$/",
           "values": false
         },
         "textMode": "auto"
@@ -175,56 +200,23 @@
       "pluginVersion": "8.4.6",
       "targets": [
         {
-          "channel": "stream/telegraf/safety_count",
+          "channel": "stream/telegraf/industrial-safety-stream",
           "datasource": {
             "type": "datasource",
             "uid": "grafana"
           },
           "filter": {
             "fields": [
-              "time",
-              "count"
+              "violations"
             ]
           },
           "queryType": "measurements",
           "refId": "A"
         }
       ],
-      "title": "Violation Counts",
+      "title": "Safety Alarm",
       "transparent": true,
       "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "PF8BBF28A9B83DA49"
-      },
-      "description": "",
-      "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 14,
-        "y": 13
-      },
-      "id": 8,
-      "options": {
-        "content": "<h1>INTEL GPU</h1>",
-        "mode": "html"
-      },
-      "pluginVersion": "8.4.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PF8BBF28A9B83DA49"
-          },
-          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"impeller_defects\" and r[\"_field\"] == \"status\" and r[\"_value\"] == 0)\n  |> count()\n  |> yield(name: \"count\")",
-          "refId": "A"
-        }
-      ],
-      "title": "Target Hardware",
-      "transparent": true,
-      "type": "text"
     },
     {
       "datasource": {
@@ -252,10 +244,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 3,
+        "h": 6,
+        "w": 4,
         "x": 17,
-        "y": 13
+        "y": 10
       },
       "id": 21,
       "options": {
@@ -293,9 +285,79 @@
       ],
       "title": "Person Detection Model FPS",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 21,
+        "y": 10
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^target \\{host=\"telegraf\", stream=\"industrialsafety\"\\}$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.6",
+      "targets": [
+        {
+          "channel": "stream/telegraf/industrial-safety-stream",
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "filter": {
+            "fields": [
+              "target"
+            ]
+          },
+          "queryType": "measurements",
+          "refId": "A"
+        }
+      ],
+      "title": "Target Hardware",
+      "transparent": true,
+      "type": "stat"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 35,
   "style": "dark",
   "tags": [],
@@ -303,13 +365,13 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
-    "to": "now"
+    "from": "2022-04-25T08:28:03.863Z",
+    "to": "2022-04-25T08:33:07.398Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Safety Dashboard - Linux",
   "uid": "zLQKpk8nk22",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
