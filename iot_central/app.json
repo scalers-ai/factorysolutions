@@ -1,0 +1,58 @@
+{
+  "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9;1",
+  "@type": "Interface",
+  "contents": [
+      {
+          "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:stream;1",
+          "@type": "Telemetry",
+          "displayName": {
+              "en": "Stream Type"
+          },
+          "name": "stream",
+          "schema": "string"
+      },
+      {
+          "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:person_count;1",
+          "@type": "Telemetry",
+          "displayName": {
+              "en": "person_count"
+          },
+          "name": "person_count",
+          "schema": "double"
+      },
+      {
+          "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:violations;1",
+          "@type": "Telemetry",
+          "displayName": {
+              "en": "violations"
+          },
+          "name": "violations",
+          "schema": "double"
+      },
+      {
+          "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:fps;1",
+          "@type": "Telemetry",
+          "displayName": {
+              "en": "fps"
+          },
+          "name": "fps",
+          "schema": "double"
+      },
+      {
+          "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:target;1",
+          "@type": "Telemetry",
+          "displayName": {
+              "en": "target"
+          },
+          "name": "target",
+          "schema": "string"
+      }
+  ],
+  "displayName": {
+      "en": "r5ltef9mn9"
+  },
+  "@context": [
+      "dtmi:iotcentral:context;2",
+      "dtmi:dtdl:context;2"
+  ]
+}

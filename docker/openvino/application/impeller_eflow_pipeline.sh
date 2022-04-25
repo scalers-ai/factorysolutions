@@ -2,10 +2,11 @@
 
 set -e
 
+SCRIPTDIR="$(dirname "$(realpath "$0")")"
+
 DEVICE=${1:-CPU}
 RTSPHOST=${2:-localhost}
 RTSPPORT=${3:-8554}
-SCRIPTDIR="$(dirname "$(realpath "$0")")"
 MOSQUITTOSERVER=${4:-mosquittoserver}
 IMPELLERVIDEOINPUT=${5}
 INDUSTRIALSAFETYVIDEOINPUT=${6}
@@ -16,6 +17,10 @@ INFLUX_TOKEN=${10}
 INFLUX_BUCKET=${11}
 INFLUX_HOST=${12}
 INFLUX_PORT=${13}
+IOTHUB_DEVICE_ENDPOINT=${14}
+IOTHUB_DEVICE_SCOPE=${15}
+IOTHUB_DEVICE_KEY=${16}
+IOTHUB_DEVICE_ID=${17}
 
 IMPELLER_DEFECT_MODEL_PATH=/application/models/impeller-defect-custom/saved_model.xml
 IMPELLER_DEFECT_MODEL_PROC_PATH=/application/models/impeller_model.json
@@ -33,6 +38,9 @@ tmux new -d ffmpeg -re -stream_loop -1 -i $INDUSTRIALSAFETYVIDEOINPUT -c copy -f
 
 # start the mjpg server script
 tmux new -d  python3 $IMAGE_SERVER_SCRIPT -m /application/models/impeller-defect-custom/hdf5/casting_product_detection.hdf5 -inflxh $INFLUX_HOST -inflxp $INFLUX_PORT -f $INDUSTRIALSAFETY_FEED_NAME -d $DEFECTDETECTION_FEED_NAME -mq $MOSQUITTOSERVER -o $INFLUX_ORG -t $INFLUX_TOKEN -b $INFLUX_BUCKET -cf $COORDINATES_FILE
+
+#start the iotcentral device provisioning and telemetry script
+tmux new -d python3 /application/iot_central/iot_central.py -m $MOSQUITTOSERVER -f $INDUSTRIALSAFETY_FEED_NAME -d $DEFECTDETECTION_FEED_NAME -dep $IOTHUB_DEVICE_ENDPOINT -dis $IOTHUB_DEVICE_SCOPE -dik $IOTHUB_DEVICE_KEY -did $IOTHUB_DEVICE_ID
 
 sleep 10
 

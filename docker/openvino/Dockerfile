@@ -19,10 +19,10 @@ RUN chmod u+x /opt/intel/openvino/install_dependencies/install_openvino_dependen
 
 RUN apt -y install sudo wget nano ffmpeg
 
-RUN python3 -m pip install flask influxdb-client paho-mqtt opencv-python shap opcua
+RUN python3 -m pip install flask influxdb-client paho-mqtt opencv-python shap opcua azure-iot-device==2.9.0
 
 EXPOSE 5000
 
-CMD ["bash", "-c", "source /opt/intel/openvino/bin/setupvars.sh && cd /application && ./impeller_eflow_pipeline.sh CPU simplertspserver 8554 mosquittoserver /application/sample_videos/impeller.mp4 /application/sample_videos/people-detection.mp4 defectdetection industrialsafety acmeindustries defect_tracking Industrial_Detection_Safety influxdb 8086"]
+CMD ["bash", "-c", "source /opt/intel/openvino/bin/setupvars.sh && cd /application && ./impeller_eflow_pipeline.sh CPU simplertspserver 8554 mosquittoserver /application/sample_videos/impeller.mp4 /application/sample_videos/people-detection.mp4 defectdetection industrialsafety acmeindustries defect_tracking Industrial_Detection_Safety influxdb 8086 global.azure-devices-provisioning.net 0ne005AC2F0 P8St3G12DUhrT9L71feMwPDFvWK0yXwBurCXFdHWK70= r5ltef9mn9"]
 
 #CMD ["/usr/bin/python3", "-m", "http.server", "5678"]

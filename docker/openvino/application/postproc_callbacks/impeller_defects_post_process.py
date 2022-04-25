@@ -66,6 +66,17 @@ class DefectDetection:
         defect_detections.set_value(violation)
         defect_accuracy.set_value(accuracy)
 
+    def get_target_hardware(self):
+        """Read target hardware of the pipeline from
+        TARGET environment variable
+        """
+        try:
+            target = os.environ['DEFECT_TARGET_HARDWARE']
+        except Exception:
+            target = 'CPU'
+
+        return target
+
     def encode_frame(self, image) -> str:
         """Encode the frame after reshaping
 
@@ -143,7 +154,8 @@ class DefectDetection:
             "impeller_status": predicted_label,
             "accuracy": prob,
             "defects": defects,
-            "image": self.encode_frame(image_cv)
+            "image": self.encode_frame(image_cv),
+            "target" : self.get_target_hardware()
         }
         self.set_opcua_values(defects, prob)
         plt.close()

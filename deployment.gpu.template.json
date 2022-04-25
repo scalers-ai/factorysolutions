@@ -17,7 +17,7 @@
             },
             "grafana": {
               "settings": {
-                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/grafana:latest.1",
+                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/grafana:latest",
                   "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"3000/tcp\":[{\"HostPort\":\"3000\"}]}}}"
               },
               "type": "docker",
@@ -72,11 +72,19 @@
             },
             "industrial-safety": {
               "settings": {
-                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/industrial-safety:latest",
+                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/industrial-safety:latest-gpu",
                   "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5000/tcp\":[{\"HostPort\":\"5000\"}]}, \"CapAdd\":[\"CAP_SYS_ADMIN\"],\"Binds\":[\"/usr/lib/wsl:/usr/lib/wsl\"],\"Devices\":[{\"PathOnHost\":\"/dev/dxg\",\"PathInContainer\":\"/dev/dxg\",\"CgroupPermissions\":\"rwm\"}]}}"
               },
               "type": "docker",
               "version": "1.0",
+              "env": {
+                "DEFECT_TARGET_HARDWARE":{
+                    "value": "$DEFECT_TARGET_HARDWARE"
+                },
+                "SAFETY_TARGET_HARDWARE":{
+                    "value": "$SAFETY_TARGET_HARDWARE"
+                }
+              },
               "status": "running",
               "restartPolicy": "always",
               "startupOrder": 7

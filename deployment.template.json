@@ -77,6 +77,14 @@
             },
             "type": "docker",
             "version": "1.0",
+            "env": {
+              "DEFECT_TARGET_HARDWARE":{
+                  "value": "$DEFECT_TARGET_HARDWARE"
+              },
+              "SAFETY_TARGET_HARDWARE":{
+                  "value": "$SAFETY_TARGET_HARDWARE"
+              }
+            },
             "status": "running",
             "restartPolicy": "always",
             "startupOrder": 7
