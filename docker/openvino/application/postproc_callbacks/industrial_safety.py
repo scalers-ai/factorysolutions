@@ -6,6 +6,7 @@ import yaml
 import cv2
 import numpy as np
 import base64
+import os
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 from opcua import Client
@@ -52,6 +53,17 @@ class TripWire:
         # set values to the variables
         safety_violation.set_value(violation)
         safety_fps.set_value(fps)
+
+    def get_target_hardware(self):
+        """Read target hardware of the pipeline from
+        TARGET environment variable
+        """
+        try:
+            target = os.environ['SAFETY_TARGET_HARDWARE']
+        except Exception:
+            target = 'CPU'
+
+        return target
 
     def encode_frame(self, image) -> str:
         """Encode the frame after reshaping
@@ -125,7 +137,8 @@ class TripWire:
                     "person_count": len(persons),
                     "violations": violations,
                     "fps": fps,
-                    "image": self.encode_frame(current_frame)
+                    "image": self.encode_frame(current_frame),
+                    "target" : self.get_target_hardware()
                 }
                 self.set_opcua_values(violations, fps)
                 frame.add_message(json.dumps(infer_metadata))
