@@ -21,7 +21,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -194,7 +194,7 @@
           "calcs": [
             "last"
           ],
-          "fields": "/^impeller_status_n$/",
+          "fields": "/^impeller_status_n \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
           "values": false
         },
         "textMode": "auto"
@@ -266,7 +266,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^accuracy$/",
+          "fields": "/^accuracy \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
           "values": false
         },
         "text": {
@@ -338,7 +338,7 @@
           "fields": "/.*/",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "value"
       },
       "pluginVersion": "8.4.6",
       "targets": [
@@ -378,6 +378,6 @@
   "timezone": "",
   "title": "Defect Detection - Linux",
   "uid": "zLQKpk8nk",
-  "version": 7,
+  "version": 2,
   "weekStart": ""
 }
