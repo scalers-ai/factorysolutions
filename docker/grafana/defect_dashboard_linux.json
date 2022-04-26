@@ -21,7 +21,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 1,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -32,9 +32,41 @@
       },
       "description": "",
       "gridPos": {
-        "h": 16,
-        "w": 14,
+        "h": 11,
+        "w": 9,
         "x": 0,
+        "y": 0
+      },
+      "id": 11,
+      "options": {
+        "content": "<html>\n  <head>\n    <title>Video Streaming Demonstration</title>\n  </head>\n  <body>\n    <video style=\"width:100%;height:100%;align:top;\" loop autoplay>  <source src=\"http://localhost:5000/static/impeller_conveyor.mp4\" type=\"video/mp4\"></video>\n  </body>\n</html>",
+        "mode": "html"
+      },
+      "pluginVersion": "8.4.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PF8BBF28A9B83DA49"
+          },
+          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"impeller_defects\" and r[\"_field\"] == \"status\" and r[\"_value\"] == 1)\n  |> count()\n  |> yield(name: \"count\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Impeller Conveyer System",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PF8BBF28A9B83DA49"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 11,
+        "w": 9,
+        "x": 9,
         "y": 0
       },
       "id": 5,
@@ -114,10 +146,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
-        "w": 9,
-        "x": 14,
-        "y": 0
+        "h": 5,
+        "w": 7,
+        "x": 0,
+        "y": 11
       },
       "id": 7,
       "options": {
@@ -160,79 +192,6 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "dark-red",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 14,
-        "y": 7
-      },
-      "id": 4,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "/^impeller_status_n \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.4.6",
-      "targets": [
-        {
-          "channel": "stream/telegraf/defect-detection-stream",
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "filter": {
-            "fields": [
-              "time",
-              "impeller_status_n"
-            ]
-          },
-          "queryType": "measurements",
-          "refId": "A"
-        }
-      ],
-      "title": "Defect Alarm",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -253,8 +212,8 @@
       "gridPos": {
         "h": 5,
         "w": 3,
-        "x": 17,
-        "y": 7
+        "x": 7,
+        "y": 11
       },
       "id": 9,
       "options": {
@@ -320,10 +279,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 14,
-        "y": 12
+        "h": 5,
+        "w": 5,
+        "x": 10,
+        "y": 11
       },
       "id": 10,
       "options": {
@@ -358,7 +317,80 @@
           "refId": "A"
         }
       ],
-      "title": "Defect Detection Model FPS",
+      "title": "Defect Detection Model FPS / Target Hardware",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "dark-red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 15,
+        "y": 11
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "/^impeller_status_n \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.6",
+      "targets": [
+        {
+          "channel": "stream/telegraf/defect-detection-stream",
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "filter": {
+            "fields": [
+              "time",
+              "impeller_status_n"
+            ]
+          },
+          "queryType": "measurements",
+          "refId": "A"
+        }
+      ],
+      "title": "Defect Alarm",
       "transparent": true,
       "type": "stat"
     }

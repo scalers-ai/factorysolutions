@@ -21,7 +21,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -113,7 +113,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 10,
+        "h": 12,
         "w": 10,
         "x": 14,
         "y": 0
@@ -180,7 +180,7 @@
         "h": 6,
         "w": 3,
         "x": 14,
-        "y": 10
+        "y": 12
       },
       "id": 7,
       "options": {
@@ -247,7 +247,7 @@
         "h": 6,
         "w": 4,
         "x": 17,
-        "y": 10
+        "y": 12
       },
       "id": 21,
       "options": {
@@ -318,7 +318,7 @@
         "h": 6,
         "w": 3,
         "x": 21,
-        "y": 10
+        "y": 12
       },
       "id": 8,
       "options": {
@@ -357,7 +357,7 @@
       "type": "stat"
     }
   ],
-  "refresh": false,
+  "refresh": "5s",
   "schemaVersion": 35,
   "style": "dark",
   "tags": [],
@@ -365,13 +365,13 @@
     "list": []
   },
   "time": {
-    "from": "2022-04-25T08:28:03.863Z",
-    "to": "2022-04-25T08:33:07.398Z"
+    "from": "now-5m",
+    "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Safety Dashboard - Linux",
   "uid": "zLQKpk8nk22",
-  "version": 4,
+  "version": 3,
   "weekStart": ""
 }

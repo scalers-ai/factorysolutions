@@ -21,8 +21,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
-  "iteration": 1650870832655,
+  "id": 3,
+  "iteration": 1650885073572,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -423,6 +423,32 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 5,
         "w": 4,
@@ -431,12 +457,39 @@
       },
       "id": 46,
       "options": {
-        "content": "<span align='center'><h1>INTEL GPU</span>",
-        "mode": "html"
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^target \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
+          "values": false
+        },
+        "textMode": "auto"
       },
       "pluginVersion": "8.4.6",
+      "targets": [
+        {
+          "channel": "stream/telegraf/defect-detection-stream",
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "filter": {
+            "fields": [
+              "time",
+              "target"
+            ]
+          },
+          "queryType": "measurements",
+          "refId": "A"
+        }
+      ],
       "title": "Target Hardware",
-      "type": "text"
+      "type": "stat"
     },
     {
       "datasource": {
@@ -624,6 +677,6 @@
   "timezone": "",
   "title": "Defect Detection - Windows",
   "uid": "RTGUILINUX",
-  "version": 7,
+  "version": 2,
   "weekStart": ""
 }

@@ -9,6 +9,9 @@ from influxdb_client.client.write_api import ASYNCHRONOUS
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 import time
 import base64
+import urllib.request
+from flask import flash, request, redirect, url_for
+from flask import send_from_directory
 
 ap = argparse.ArgumentParser()
 
@@ -118,6 +121,10 @@ def generate_safety_feed():
 def generate_empty_image():
     return np.ones(shape=(300,300,1), dtype=np.int16)
 
+@app.route('/impeller_conveyor')
+def impeller_conveyor():
+    return send_from_directory('static', 'impeller_conveyor.mp4')
+
 @app.route('/explainmodel')
 def impeller_quality_video_feed():
     """
@@ -129,7 +136,7 @@ def impeller_quality_video_feed():
 @app.route('/industrialsafety')
 def safety_video_feed():
     """
-    Trigger the safety_video_feed() function on opening "0.0.0.0:5000/explainmodel" URL
+    Trigger the safety_video_feed() function on opening "0.0.0.0:5000/industrialsafety" URL
     :return: image with detections and tripwire overlays.
     """
     return Response(generate_safety_feed(), mimetype='multipart/x-mixed-replace; boundary=frame')
@@ -154,9 +161,9 @@ def process_stream(payload):
     global impeller_defect_image
     stream_dict = json.loads(payload)
     stream_type = stream_dict['stream']
-    if stream_type == 'industrialsafety':
+    if stream_type == INPUTFEED_NAME:
         trip_wire_image = decode(stream_dict['image'])
-    elif stream_type == 'defectdetection':
+    elif stream_type == DEFECTFEED_NAME:
         impeller_defect_image = decode(stream_dict['image'])
 
 if __name__ == '__main__':

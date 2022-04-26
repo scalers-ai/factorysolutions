@@ -21,7 +21,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 1,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -380,9 +380,30 @@
     },
     {
       "datasource": {
-        "name": "InfluxDB",
-        "type": "influxdb",
-        "uid": "influxuid"
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 5,
@@ -392,21 +413,39 @@
       },
       "id": 10,
       "options": {
-        "content": "<span align='center'><h1>INTEL GPU</span>",
-        "mode": "html"
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^target \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
+          "values": false
+        },
+        "textMode": "auto"
       },
       "pluginVersion": "8.4.6",
       "targets": [
         {
+          "channel": "stream/telegraf/defect-detection-stream",
           "datasource": {
             "name": "InfluxDB",
             "type": "influxdb",
             "uid": "influxuid"
           },
+          "filter": {
+            "fields": [
+              "time",
+              "target"
+            ]
+          },
           "groupBy": [],
           "measurement": "safety",
           "orderByTime": "ASC",
           "policy": "default",
+          "queryType": "measurements",
           "refId": "A",
           "resultFormat": "time_series",
           "select": [
@@ -423,7 +462,7 @@
         }
       ],
       "title": "Target Hardware",
-      "type": "text"
+      "type": "stat"
     },
     {
       "datasource": {
@@ -631,6 +670,6 @@
   "timezone": "",
   "title": "Safety Dashboard - Windows",
   "uid": "EdgeUiWin",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
