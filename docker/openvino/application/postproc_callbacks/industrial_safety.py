@@ -130,6 +130,7 @@ class TripWire:
                             color = (0, 0, 255)
                         else:
                             color = (0, 255, 0)
+                        cv2.circle(current_frame, (int(p1), person[3]), 10, color, -1)
                 cv2.polylines(current_frame, [pts],
                     True, color, thickness)
                 infer_metadata = {
