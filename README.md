@@ -92,11 +92,13 @@ Complete the following steps to setup the deployment machine.
     
     * For **CPU**, right click on the `src/deployment.template.json` and then select **Build and Push IoT Edge Solution**.
     * For **GPU**, right click on the `src/deployment.template.gpu.json` and then select **Build and Push IoT Edge Solution**.
-
+    * Note: By default the docker build assumes target hardware as CPU. If you want to change please also replace the word `CPU` 
+    by `GPU` in the `impeller_elow_pipeline.sh` as well. 
+    
     The above step generates the deployment manifest file namely `deployment.amd64.json` or `deployment.gpu.amd64.json` 
     based on whether CPU or GPU template was chosen above.
 
-## Deploying the Solution
+## Deploying the Solution 
 Continue to deploy the solution to your deployment machine once all the module are build and pushed.
 
 1. Right click on the `config/deployment.amd64.json` (or `config/deployment.amd64.gpu.json` if you want to run on the GPU) file 
