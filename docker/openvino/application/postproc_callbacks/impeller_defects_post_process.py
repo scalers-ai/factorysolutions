@@ -2,17 +2,14 @@ import sys
 import gi
 import json
 import time
-import io
-import numpy as np
 import base64
 from opcua import Client
 import paho.mqtt.client as mqtt
-import shap
 import cv2
-import matplotlib.pyplot as plt
 from tensorflow.keras.models import Sequential, load_model
 import os
-
+from tf_explain.core.grad_cam import GradCAM
+import tensorflow as tf
 
 gi.require_version('Gst', '1.0')
 from gi.repository import Gst, GObject
@@ -98,21 +95,12 @@ class DefectDetection:
         return base64.b64encode(buffer).decode()
 
     def initialize_defectdetection(self):
-        resources_path= "/application/resources/"
-        train_path = resources_path + "train/"
         tf_model_path = "/application/models/impeller-defect-custom/hdf5/casting_product_detection.hdf5"
         self.model = load_model(tf_model_path)
         self.image_shape = (300,300,1)
-        train_cases = ['ok_front/'+i for i in os.listdir(train_path + 'ok_front')]
-        train_cases.extend(['def_front/'+i for i in os.listdir(train_path + 'def_front')])
-        train_sample = [cv2.imread(train_path + i,
-                                   cv2.IMREAD_GRAYSCALE).reshape(1, *self.image_shape) / 255
-                        for i in np.random.choice(train_cases, 3000, replace=False)]
-        self.explainer = shap.DeepExplainer(self.model, train_sample[0])
 
-    """
-    Class to handle trip wire violation detections and image processing
-    """
+        self.gradcam_explainer = GradCAM()
+
     def process_frame(self, frame: VideoFrame):
         """
         method to handle tripwire logic
@@ -129,12 +117,13 @@ class DefectDetection:
             frame.remove_message(message)
         with frame.data() as mat:
             current_frame = mat.copy()
-            grayed = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)\
+            grayed = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY) \
                          .reshape(1, *self.image_shape) / 255
-            self.infer_explain_frame(grayed, frame, fps)
+            self.infer_explain_frame_with_gradcam(grayed, current_frame, fps)
         return True
 
-    def infer_explain_frame(self, image, frame, fps):
+    def infer_explain_frame_with_gradcam(self, image, frame, fps):
+
         image = image.reshape(1, *self.image_shape)
         prediction = self.model.predict(image)
         predicted_label = None
@@ -148,16 +137,15 @@ class DefectDetection:
             predicted_label = "OK"
             prob = prediction.sum() * 100
 
-        shap_values = self.explainer.shap_values(image)
-        shap.image_plot(shap_values, image, show=False)
-        buf = io.BytesIO()
-        plt.title('Impeller is {} \n Probability is {:.3f} %'.format(predicted_label, prob), weight='bold', size=12)
-        plt.axis('off')
-
-        plt.savefig(buf, format='jpg')
-        buf.seek(0)
-        file_bytes = np.asarray(bytearray(buf.read()), dtype=np.uint8)
-        image_cv = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+        explainer_temp_image_path = "/application/resources/ktrain.jpg"
+        cv2.imwrite(explainer_temp_image_path, frame)
+        frame = frame.reshape((300,300,4))
+        img_pil = tf.keras.preprocessing.image.load_img(explainer_temp_image_path,
+                                                        target_size=(300,300), color_mode='grayscale')
+        img_array = tf.keras.preprocessing.image.img_to_array(img_pil)
+        image_data = ([img_array], None)
+        image_cv = self.gradcam_explainer.explain(image_data, self.model, class_index=0)
+        image_cv = image_cv.reshape(300,300,3)
         infer_metadata = {
             "stream": "defectdetection",
             "impeller_status": predicted_label,
@@ -165,9 +153,8 @@ class DefectDetection:
             "defects": defects,
             "target" : self.get_target_hardware(),
             "fps" : fps,
-            "image": self.encode_frame(image_cv)
+            "explainedimage": self.encode_frame(image_cv),
+            "image": self.encode_frame(frame)
         }
         self.set_opcua_values(defects, prob, fps)
-        plt.close()
         self.mqtt_client.publish("defectdetection", json.dumps(infer_metadata))
-        return buf

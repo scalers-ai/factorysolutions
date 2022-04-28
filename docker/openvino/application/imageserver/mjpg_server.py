@@ -51,6 +51,7 @@ MQTT_CLIENT_NAME =   INPUTFEED_NAME + "-mqttclient2"
 COORDINATES_FILE = args['tripwire_coordinates_file']
 trip_wire_image = None
 impeller_defect_image = None
+impeller_explained_image = None
 
 explainer = None
 model = None
@@ -92,6 +93,20 @@ def init_model_explainer():
     db_client = InfluxDBClient(url="http://{}:{}".format(IPADDRESS, INFLUXDBPORT), token=INFLUX_API_TOKEN, org=INFLUX_ORG)
     write_api = db_client.write_api(write_options=ASYNCHRONOUS)
 
+
+def generate_explainer_image():
+    global impeller_explained_image
+    while True:
+        time.sleep(0.01)
+        ret, impeller_explained_image_encoded = cv2.imencode('.jpg', impeller_explained_image)
+        if ret:
+            yield(b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + impeller_explained_image_encoded.tobytes() + b'\r\n')
+        else:
+            empty_image = generate_empty_image()
+            cv2.putText(img=empty_image, text='No Data', org=(150, 250), fontFace=cv2.FONT_HERSHEY_TRIPLEX,
+                        fontScale=3, color=(0, 255, 0),thickness=3)
+            yield(b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + empty_image.tobytes() + b'\r\n')
+
 def generate():
     global impeller_defect_image
     while True:
@@ -131,6 +146,14 @@ def impeller_quality_video_feed():
     Trigger the explainmodel() function on opening "0.0.0.0:5000/explainmodel" URL
     :return: image with explanation and inference details
     """
+    return Response(generate_explainer_image(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/currentmodel')
+def impeller_quality_video_feed_current():
+    """
+    Trigger the explainmodel() function on opening "0.0.0.0:5000/explainmodel" URL
+    :return: image with explanation and inference details
+    """
     return Response(generate(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/industrialsafety')
@@ -159,12 +182,14 @@ def decode(encoded_img: str) -> np.ndarray:
 def process_stream(payload):
     global trip_wire_image
     global impeller_defect_image
+    global impeller_explained_image
     stream_dict = json.loads(payload)
     stream_type = stream_dict['stream']
     if stream_type == INPUTFEED_NAME:
         trip_wire_image = decode(stream_dict['image'])
     elif stream_type == DEFECTFEED_NAME:
         impeller_defect_image = decode(stream_dict['image'])
+        impeller_explained_image = decode(stream_dict[''])
 
 if __name__ == '__main__':
     init_model_explainer()
