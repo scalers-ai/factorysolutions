@@ -25,7 +25,7 @@ WORKDIR /application/resources
 
 RUN gdown https://drive.google.com/uc?id=19DMtkOqP99eNVO5SEqhIDrxTMp6tGpWT -O train.zip
 
-RUN unzip train.zip
+RUN unzip -o train.zip
 
 RUN rm -rf train.zip
 
