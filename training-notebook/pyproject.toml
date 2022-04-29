@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "training-notebook"
+version = "0.1.0"
+description = ""
+authors = ["Scalers AI <info@scalers.ai>"]
+
+[tool.poetry.dependencies]
+python = "^3.8,<3.9"
+tensorflow = "^2.8.0"
+ktrain = "^0.29.3"
+jupyterlab = "^3.3.2"
+numpy = "^1.22.3"
+pandas = "^1.4.1"
+Pillow = "^9.0.1"
+seaborn = "^0.11.2"
+ipywidgets = "^7.6.5"
+widgetsnbextension = "^3.5.2"
+pandas-profiling = "^3.1.0"
+eli5 = {url = "https://github.com/amaiya/eli5/archive/refs/heads/tfkeras_0_10_1.zip"}
+tf2onnx = "^1.9.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
