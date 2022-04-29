@@ -32,46 +32,14 @@
       },
       "description": "",
       "gridPos": {
-        "h": 11,
-        "w": 9,
+        "h": 12,
+        "w": 11,
         "x": 0,
-        "y": 0
-      },
-      "id": 11,
-      "options": {
-        "content": "<html>\n  <head>\n    <title>Video Streaming Demonstration</title>\n  </head>\n  <body>\n    <video style=\"width:100%;height:100%;align:top;\" loop autoplay>  <source src=\"http://localhost:5000/static/impeller_conveyor.mp4\" type=\"video/mp4\"></video>\n  </body>\n</html>",
-        "mode": "html"
-      },
-      "pluginVersion": "8.4.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PF8BBF28A9B83DA49"
-          },
-          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"impeller_defects\" and r[\"_field\"] == \"status\" and r[\"_value\"] == 1)\n  |> count()\n  |> yield(name: \"count\")",
-          "refId": "A"
-        }
-      ],
-      "title": "Impeller Conveyer System",
-      "transparent": true,
-      "type": "text"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "PF8BBF28A9B83DA49"
-      },
-      "description": "",
-      "gridPos": {
-        "h": 11,
-        "w": 5,
-        "x": 9,
         "y": 0
       },
       "id": 5,
       "options": {
-        "content": "<html>\n  <head>\n    <title>Video Streaming Demonstration</title>\n  </head>\n  <body>\n    <img src=\"http://localhost:5000/currentmodel\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n  </body>\n</html>",
+        "content": "<html>\n  <head>\n    <title>Industrial Safety</title>\n  </head>\n  <body>\n     <div style=\"width: 100%; overflow: hidden;\">\n      <div style=\"width: 400px; height:400px; float: left;\">\n      <img src=\"http://localhost:5000/currentmodel\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n      </div>\n      <div style=\"width: 400px; height:400px; margin-left: 420px;\">\n      <img src=\"http://localhost:5000/explainmodel\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n      </div>\n      </div> \n  </body>\n</html>",
         "mode": "html"
       },
       "pluginVersion": "8.4.6",
@@ -86,38 +54,6 @@
         }
       ],
       "title": "Impeller Camera Feed",
-      "transparent": true,
-      "type": "text"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "PF8BBF28A9B83DA49"
-      },
-      "description": "",
-      "gridPos": {
-        "h": 11,
-        "w": 5,
-        "x": 14,
-        "y": 0
-      },
-      "id": 12,
-      "options": {
-        "content": "<html>\n  <head>\n    <title>Video Streaming Demonstration</title>\n  </head>\n  <body>\n    <img src=\"http://localhost:5000/explainmodel\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n  </body>\n</html>",
-        "mode": "html"
-      },
-      "pluginVersion": "8.4.6",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "PF8BBF28A9B83DA49"
-          },
-          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"impeller_defects\" and r[\"_field\"] == \"status\" and r[\"_value\"] == 1)\n  |> count()\n  |> yield(name: \"count\")",
-          "refId": "A"
-        }
-      ],
-      "title": "Model Analysis",
       "transparent": true,
       "type": "text"
     },
@@ -147,9 +83,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 3,
-        "x": 0,
-        "y": 11
+        "w": 5,
+        "x": 11,
+        "y": 0
       },
       "id": 7,
       "options": {
@@ -211,9 +147,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 3,
-        "x": 3,
-        "y": 11
+        "w": 5,
+        "x": 11,
+        "y": 5
       },
       "id": 14,
       "options": {
@@ -257,146 +193,6 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "dark-red",
-                "value": 1
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 6,
-        "y": 11
-      },
-      "id": 4,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "fields": "/^impeller_status_n \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.4.6",
-      "targets": [
-        {
-          "channel": "stream/telegraf/defect-detection-stream",
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "filter": {
-            "fields": [
-              "time",
-              "impeller_status_n"
-            ]
-          },
-          "queryType": "measurements",
-          "refId": "A"
-        }
-      ],
-      "title": "Defect Alarm",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 5,
-        "x": 10,
-        "y": 11
-      },
-      "id": 10,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/.*/",
-          "values": false
-        },
-        "textMode": "value"
-      },
-      "pluginVersion": "8.4.6",
-      "targets": [
-        {
-          "channel": "stream/telegraf/defect-detection-stream",
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "filter": {
-            "fields": [
-              "target",
-              "fps"
-            ]
-          },
-          "queryType": "measurements",
-          "refId": "A"
-        }
-      ],
-      "title": "Defect Detection Model FPS / Target Hardware",
-      "transparent": true,
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -416,9 +212,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 3,
-        "x": 15,
-        "y": 11
+        "w": 5,
+        "x": 11,
+        "y": 10
       },
       "id": 9,
       "options": {
@@ -458,6 +254,165 @@
       "title": "Accuracy",
       "transparent": true,
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PF8BBF28A9B83DA49"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 12
+      },
+      "id": 11,
+      "options": {
+        "content": "<html>\n  <head>\n    <title>Video Streaming Demonstration</title>\n  </head>\n  <body>\n    <video style=\"width:100%;height:100%;\" loop autoplay>  <source src=\"http://localhost:5000/static/impeller_conveyor.mp4\" type=\"video/mp4\"></video>\n  </body>\n</html>",
+        "mode": "html"
+      },
+      "pluginVersion": "8.4.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PF8BBF28A9B83DA49"
+          },
+          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"impeller_defects\" and r[\"_field\"] == \"status\" and r[\"_value\"] == 1)\n  |> count()\n  |> yield(name: \"count\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Impeller Conveyer System",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PF8BBF28A9B83DA49"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 5,
+        "x": 6,
+        "y": 12
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PF8BBF28A9B83DA49"
+          },
+          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"defect-detection-stream\")\n  |> filter(fn: (r) => r[\"_field\"] == \"impeller_status_n\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> count(column: \"_value\")\n  |> yield(name: \"mean\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Yield",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 5,
+        "x": 11,
+        "y": 15
+      },
+      "id": 10,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "pluginVersion": "8.4.6",
+      "targets": [
+        {
+          "channel": "stream/telegraf/defect-detection-stream",
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "filter": {
+            "fields": [
+              "target",
+              "fps"
+            ]
+          },
+          "queryType": "measurements",
+          "refId": "A"
+        }
+      ],
+      "title": "Defect Detection Model FPS / Target Hardware",
+      "transparent": true,
+      "type": "stat"
     }
   ],
   "refresh": "5s",
@@ -475,6 +430,6 @@
   "timezone": "",
   "title": "Defect Detection - Linux",
   "uid": "zLQKpk8nk",
-  "version": 7,
+  "version": 5,
   "weekStart": ""
 }
