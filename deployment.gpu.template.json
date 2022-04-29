@@ -72,7 +72,7 @@
             },
             "industrial-safety": {
               "settings": {
-                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/industrial-safety:latest-gpu",
+                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/industrial-safety:latest",
                   "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5000/tcp\":[{\"HostPort\":\"5000\"}]}, \"CapAdd\":[\"CAP_SYS_ADMIN\"],\"Binds\":[\"/usr/lib/wsl:/usr/lib/wsl\"],\"Devices\":[{\"PathOnHost\":\"/dev/dxg\",\"PathInContainer\":\"/dev/dxg\",\"CgroupPermissions\":\"rwm\"}]}}"
               },
               "type": "docker",
