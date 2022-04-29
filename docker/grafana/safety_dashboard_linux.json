@@ -21,7 +21,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 1,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -79,7 +79,7 @@
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "linear",
+            "lineInterpolation": "stepBefore",
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -113,7 +113,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 12,
+        "h": 6,
         "w": 10,
         "x": 14,
         "y": 0
@@ -121,10 +121,8 @@
       "id": 40,
       "options": {
         "legend": {
-          "calcs": [
-            "sum"
-          ],
-          "displayMode": "list",
+          "calcs": [],
+          "displayMode": "hidden",
           "placement": "bottom"
         },
         "tooltip": {
@@ -180,7 +178,7 @@
         "h": 6,
         "w": 3,
         "x": 14,
-        "y": 12
+        "y": 6
       },
       "id": 7,
       "options": {
@@ -220,6 +218,71 @@
     },
     {
       "datasource": {
+        "type": "influxdb",
+        "uid": "PF8BBF28A9B83DA49"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 17,
+        "y": 6
+      },
+      "id": 41,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "/^violations \\{host=\"telegraf\", stream=\"industrialsafety\"\\}$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PF8BBF28A9B83DA49"
+          },
+          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"industrial-safety-stream\")\n  |> filter(fn: (r) => r[\"_field\"] == \"violations\")\n  |> aggregateWindow(every: 10s, fn: last, createEmpty: false)\n  |> yield(name: \"last\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Total Safety Violations",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
         "type": "datasource",
         "uid": "grafana"
       },
@@ -245,8 +308,8 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 4,
-        "x": 17,
+        "w": 3,
+        "x": 14,
         "y": 12
       },
       "id": 21,
@@ -317,7 +380,7 @@
       "gridPos": {
         "h": 6,
         "w": 3,
-        "x": 21,
+        "x": 17,
         "y": 12
       },
       "id": 8,
@@ -357,7 +420,7 @@
       "type": "stat"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 35,
   "style": "dark",
   "tags": [],
@@ -365,13 +428,13 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
-    "to": "now"
+    "from": "2022-04-29T06:40:12.979Z",
+    "to": "2022-04-29T06:41:25.793Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Safety Dashboard - Linux",
   "uid": "zLQKpk8nk22",
-  "version": 3,
+  "version": 6,
   "weekStart": ""
 }

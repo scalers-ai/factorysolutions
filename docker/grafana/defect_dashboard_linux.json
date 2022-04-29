@@ -129,35 +129,67 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "mode": "thresholds"
           },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 0,
+        "y": 11
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.6",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "PF8BBF28A9B83DA49"
+          },
+          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"defect-detection-stream\")\n  |> filter(fn: (r) => r[\"_field\"] == \"impeller_status_n\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> count(column: \"_value\")\n  |> yield(name: \"mean\")",
+          "refId": "A"
+        }
+      ],
+      "title": "Total  Processed",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "PF8BBF28A9B83DA49"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -179,23 +211,24 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 8,
-        "x": 0,
+        "w": 3,
+        "x": 3,
         "y": 11
       },
-      "id": 7,
+      "id": 14,
       "options": {
-        "legend": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
           "calcs": [
             "sum"
           ],
-          "displayMode": "list",
-          "placement": "bottom"
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "textMode": "auto"
       },
       "pluginVersion": "8.4.6",
       "targets": [
@@ -204,13 +237,13 @@
             "type": "influxdb",
             "uid": "PF8BBF28A9B83DA49"
           },
-          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"defect-detection-stream\")\n  |> filter(fn: (r) => r[\"_field\"] == \"impeller_status_n\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> yield(name: \"mean\")",
+          "query": "from(bucket: \"Industrial_Detection_Safety\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"defect-detection-stream\")\n  |> filter(fn: (r) => r[\"_field\"] == \"impeller_status_n\" and r[\"_value\"] == 1)\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> count(column: \"_value\")\n  |> yield(name: \"mean\")",
           "refId": "A"
         }
       ],
-      "title": "Total Impellers Processed",
+      "title": "Total Defective",
       "transparent": true,
-      "type": "timeseries"
+      "type": "stat"
     },
     {
       "datasource": {
@@ -224,6 +257,7 @@
             "mode": "thresholds"
           },
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -232,38 +266,35 @@
                 "value": null
               },
               {
-                "color": "green",
-                "value": 80
+                "color": "dark-red",
+                "value": 1
               }
             ]
           },
-          "unit": "percent"
+          "unit": "none"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 5,
         "w": 3,
-        "x": 8,
+        "x": 6,
         "y": 11
       },
-      "id": 9,
+      "id": 4,
       "options": {
         "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
+        "graphMode": "area",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "lastNotNull"
+            "last"
           ],
-          "fields": "/^accuracy \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
+          "fields": "/^impeller_status_n \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
           "values": false
         },
-        "text": {
-          "titleSize": 1
-        },
-        "textMode": "value"
+        "textMode": "auto"
       },
       "pluginVersion": "8.4.6",
       "targets": [
@@ -275,14 +306,15 @@
           },
           "filter": {
             "fields": [
-              "accuracy"
+              "time",
+              "impeller_status_n"
             ]
           },
           "queryType": "measurements",
           "refId": "A"
         }
       ],
-      "title": "Accuracy",
+      "title": "Defect Alarm",
       "transparent": true,
       "type": "stat"
     },
@@ -313,7 +345,7 @@
       "gridPos": {
         "h": 5,
         "w": 5,
-        "x": 11,
+        "x": 10,
         "y": 11
       },
       "id": 10,
@@ -365,7 +397,6 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -374,35 +405,38 @@
                 "value": null
               },
               {
-                "color": "dark-red",
-                "value": 1
+                "color": "green",
+                "value": 80
               }
             ]
           },
-          "unit": "none"
+          "unit": "percent"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 5,
         "w": 3,
-        "x": 16,
+        "x": 15,
         "y": 11
       },
-      "id": 4,
+      "id": 9,
       "options": {
         "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
+        "graphMode": "none",
+        "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "lastNotNull"
           ],
-          "fields": "/^impeller_status_n \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
+          "fields": "/^accuracy \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
           "values": false
         },
-        "textMode": "auto"
+        "text": {
+          "titleSize": 1
+        },
+        "textMode": "value"
       },
       "pluginVersion": "8.4.6",
       "targets": [
@@ -414,15 +448,14 @@
           },
           "filter": {
             "fields": [
-              "time",
-              "impeller_status_n"
+              "accuracy"
             ]
           },
           "queryType": "measurements",
           "refId": "A"
         }
       ],
-      "title": "Defect Alarm",
+      "title": "Accuracy",
       "transparent": true,
       "type": "stat"
     }
@@ -435,13 +468,13 @@
     "list": []
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Defect Detection - Linux",
   "uid": "zLQKpk8nk",
-  "version": 4,
+  "version": 7,
   "weekStart": ""
 }
