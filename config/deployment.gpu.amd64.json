@@ -16,7 +16,7 @@
           },
           "grafana": {
             "settings": {
-              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/grafana:latest.1",
+              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/grafana:latest",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"3000/tcp\":[{\"HostPort\":\"3000\"}]}}}"
             },
             "type": "docker",
@@ -76,6 +76,14 @@
             },
             "type": "docker",
             "version": "1.0",
+            "env": {
+              "DEFECT_TARGET_HARDWARE": {
+                "value": "GPU"
+              },
+              "SAFETY_TARGET_HARDWARE": {
+                "value": "GPU"
+              }
+            },
             "status": "running",
             "restartPolicy": "always",
             "startupOrder": 7
