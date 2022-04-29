@@ -4,7 +4,9 @@ set -e
 
 SCRIPTDIR="$(dirname "$(realpath "$0")")"
 
+#overwrite from what is set in the .env file since this will be based on whether user wants to deploy of GPU or CPU.
 DEVICE=${1:-CPU}
+
 RTSPHOST=${2:-localhost}
 RTSPPORT=${3:-8554}
 MOSQUITTOSERVER=${4:-mosquittoserver}
@@ -37,7 +39,7 @@ tmux new -d ffmpeg -re -stream_loop -1 -i $IMPELLERVIDEOINPUT -c copy -f rtsp -r
 tmux new -d ffmpeg -re -stream_loop -1 -i $INDUSTRIALSAFETYVIDEOINPUT -c copy -f rtsp -rtsp_transport tcp rtsp://$RTSPHOST:$RTSPPORT/$INDUSTRIALSAFETY_FEED_NAME
 
 # start the mjpg server script
-tmux new -d  python3 $IMAGE_SERVER_SCRIPT -m /application/models/impeller-defect-custom/hdf5/casting_product_detection.hdf5 -inflxh $INFLUX_HOST -inflxp $INFLUX_PORT -f $INDUSTRIALSAFETY_FEED_NAME -d $DEFECTDETECTION_FEED_NAME -mq $MOSQUITTOSERVER -o $INFLUX_ORG -t $INFLUX_TOKEN -b $INFLUX_BUCKET -cf $COORDINATES_FILE
+tmux new -d python3 $IMAGE_SERVER_SCRIPT -m /application/models/impeller-defect-custom/hdf5/casting_product_detection.hdf5 -inflxh $INFLUX_HOST -inflxp $INFLUX_PORT -f $INDUSTRIALSAFETY_FEED_NAME -d $DEFECTDETECTION_FEED_NAME -mq $MOSQUITTOSERVER -o $INFLUX_ORG -t $INFLUX_TOKEN -b $INFLUX_BUCKET -cf $COORDINATES_FILE
 
 #start the iotcentral device provisioning and telemetry script
 tmux new -d python3 /application/iot_central/iot_central.py -m $MOSQUITTOSERVER -f $INDUSTRIALSAFETY_FEED_NAME -d $DEFECTDETECTION_FEED_NAME -dep $IOTHUB_DEVICE_ENDPOINT -dis $IOTHUB_DEVICE_SCOPE -dik $IOTHUB_DEVICE_KEY -did $IOTHUB_DEVICE_ID
@@ -65,7 +67,7 @@ gvametaconvert format=json add-tensor-data=true ! \
 gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$INDUSTRIALSAFETY_FEED_NAME"
 
 echo ${PIPELINE2}
-tmux new -d  ${PIPELINE2}
+tmux new -d ${PIPELINE2}
 
 
 sleep infinity
