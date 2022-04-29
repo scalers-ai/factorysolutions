@@ -117,9 +117,10 @@ class DefectDetection:
             frame.remove_message(message)
         with frame.data() as mat:
             current_frame = mat.copy()
+            current_frame_temp = mat.copy()
             grayed = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY) \
                          .reshape(1, *self.image_shape) / 255
-            self.infer_explain_frame_with_gradcam(grayed, current_frame, fps)
+            self.infer_explain_frame_with_gradcam(grayed, current_frame_temp, fps)
         return True
 
     def infer_explain_frame_with_gradcam(self, image, frame, fps):
@@ -147,12 +148,15 @@ class DefectDetection:
         cv2.rectangle(frame, (2, 2), (150, 25), background_color, -1)
         cv2.putText(frame, predicted_label + ":" + "{:.1f}".format(prob) + "%", (5, 18),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, font_color, 1, cv2.LINE_AA)
-        frame = frame.reshape((300,300,4))
+
         img_pil = tf.keras.preprocessing.image.load_img(explainer_temp_image_path, target_size=(300,300), color_mode='grayscale')
-        img_array = tf.keras.preprocessing.image.img_to_array(img_pil)
+        img_array = tf.keras.preprocessing.image.img_to_array(img_pil)/255
         image_data = ([img_array], None)
-        image_cv = self.gradcam_explainer.explain(image_data, self.model, class_index=0)
-        image_cv = image_cv.reshape(300,300,3)
+        image_cv = self.gradcam_explainer.explain(image_data, self.explainer_model, class_index=0)
+
+        explained_temp_image_path = "/application/resources/explainer_temp.jpg"
+        self.gradcam_explainer.save(image_cv, ".", explained_temp_image_path)
+        temp_image = cv2.imread(explained_temp_image_path, cv2.IMREAD_COLOR)
         infer_metadata = {
             "stream": "defectdetection",
             "impeller_status": predicted_label,
@@ -160,7 +164,7 @@ class DefectDetection:
             "defects": defects,
             "target" : self.get_target_hardware(),
             "fps" : fps,
-            "explainedimage": self.encode_frame(image_cv),
+            "explainedimage": self.encode_frame(temp_image),
             "image": self.encode_frame(frame)
         }
         self.set_opcua_values(defects, prob, fps)
