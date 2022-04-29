@@ -152,7 +152,7 @@ class DefectDetection:
         img_pil = tf.keras.preprocessing.image.load_img(explainer_temp_image_path, target_size=(300,300), color_mode='grayscale')
         img_array = tf.keras.preprocessing.image.img_to_array(img_pil)/255
         image_data = ([img_array], None)
-        image_cv = self.gradcam_explainer.explain(image_data, self.explainer_model, class_index=0)
+        image_cv = self.gradcam_explainer.explain(image_data, self.model, class_index=0)
 
         explained_temp_image_path = "/application/resources/explainer_temp.jpg"
         self.gradcam_explainer.save(image_cv, ".", explained_temp_image_path)
