@@ -641,7 +641,7 @@
       "type": "stat"
     }
   ],
-  "refresh": "",
+  "refresh": "5s",
   "schemaVersion": 35,
   "style": "dark",
   "tags": [],

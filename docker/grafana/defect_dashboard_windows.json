@@ -22,14 +22,14 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1651235486217,
+  "iteration": 1651236676239,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "gridPos": {
         "h": 11,
-        "w": 8,
+        "w": 6,
         "x": 0,
         "y": 0
       },
@@ -74,7 +74,7 @@
       "gridPos": {
         "h": 11,
         "w": 16,
-        "x": 8,
+        "x": 6,
         "y": 0
       },
       "id": 42,
@@ -299,73 +299,6 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 4,
-        "x": 0,
-        "y": 11
-      },
-      "id": 47,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^defectfps telegraf$/",
-          "values": false
-        },
-        "text": {
-          "valueSize": 50
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "8.4.6",
-      "targets": [
-        {
-          "channel": "stream/telegraf/defect_fps",
-          "datasource": {
-            "type": "datasource",
-            "uid": "grafana"
-          },
-          "filter": {
-            "fields": [
-              "defectfps"
-            ]
-          },
-          "queryType": "measurements",
-          "refId": "A"
-        }
-      ],
-      "title": "Defect Detection Model FPS",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
                 "color": "green",
                 "value": null
               },
@@ -381,7 +314,7 @@
       "gridPos": {
         "h": 5,
         "w": 4,
-        "x": 4,
+        "x": 0,
         "y": 11
       },
       "id": 40,
@@ -420,6 +353,73 @@
         }
       ],
       "title": "Defect Detections",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 4,
+        "y": 11
+      },
+      "id": 47,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^defectfps telegraf$/",
+          "values": false
+        },
+        "text": {
+          "valueSize": 50
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.4.6",
+      "targets": [
+        {
+          "channel": "stream/telegraf/defect_fps",
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "filter": {
+            "fields": [
+              "defectfps"
+            ]
+          },
+          "queryType": "measurements",
+          "refId": "A"
+        }
+      ],
+      "title": "Defect Detection Model FPS",
       "type": "stat"
     },
     {
@@ -548,7 +548,7 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 12,
+        "w": 10,
         "x": 12,
         "y": 11
       },
