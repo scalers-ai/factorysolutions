@@ -189,7 +189,7 @@ def process_stream(payload):
         trip_wire_image = decode(stream_dict['image'])
     elif stream_type == DEFECTFEED_NAME:
         impeller_defect_image = decode(stream_dict['image'])
-        impeller_explained_image = decode(stream_dict[''])
+        impeller_explained_image = decode(stream_dict['explainedimage'])
 
 if __name__ == '__main__':
     init_model_explainer()
