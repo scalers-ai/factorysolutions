@@ -129,19 +129,26 @@ class DefectDetection:
         predicted_label = None
         prob = None
         defects = 0
+        font_color = (0, 0, 0)
+        background_color = (98, 252, 3)
+
         if (prediction < 0.5):
             predicted_label = "Defective"
             prob = (1-prediction.sum()) * 100
             defects = 1
+            background_color = (0, 0, 255)
         else:
             predicted_label = "OK"
             prob = prediction.sum() * 100
 
         explainer_temp_image_path = "/application/resources/ktrain.jpg"
         cv2.imwrite(explainer_temp_image_path, frame)
+
+        cv2.rectangle(frame, (2, 2), (150, 25), background_color, -1)
+        cv2.putText(frame, predicted_label + ":" + "{:.1f}".format(prob) + "%", (5, 18),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, font_color, 1, cv2.LINE_AA)
         frame = frame.reshape((300,300,4))
-        img_pil = tf.keras.preprocessing.image.load_img(explainer_temp_image_path,
-                                                        target_size=(300,300), color_mode='grayscale')
+        img_pil = tf.keras.preprocessing.image.load_img(explainer_temp_image_path, target_size=(300,300), color_mode='grayscale')
         img_array = tf.keras.preprocessing.image.img_to_array(img_pil)
         image_data = ([img_array], None)
         image_cv = self.gradcam_explainer.explain(image_data, self.model, class_index=0)
