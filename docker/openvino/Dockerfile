@@ -19,15 +19,7 @@ RUN chmod u+x /opt/intel/openvino/install_dependencies/install_openvino_dependen
 
 RUN apt -y install sudo wget nano ffmpeg zip unzip
 
-RUN python3 -m pip install flask influxdb-client paho-mqtt opencv-python shap opcua gdown azure-iot-device==2.9.0 tf-explain
-
-WORKDIR /application/resources
-
-RUN gdown https://drive.google.com/uc?id=19DMtkOqP99eNVO5SEqhIDrxTMp6tGpWT -O train.zip
-
-RUN unzip -o train.zip
-
-RUN rm -rf train.zip
+RUN python3 -m pip install flask influxdb-client paho-mqtt opencv-python shap opcua azure-iot-device==2.9.0 tf-explain
 
 EXPOSE 5000
 
