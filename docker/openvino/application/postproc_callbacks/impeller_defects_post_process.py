@@ -139,7 +139,7 @@ class DefectDetection:
             defects = 1
             background_color = (0, 0, 255)
         else:
-            predicted_label = "OK"
+            predicted_label = "Pass"
             prob = prediction.sum() * 100
 
         explainer_temp_image_path = "/application/resources/ktrain.jpg"
