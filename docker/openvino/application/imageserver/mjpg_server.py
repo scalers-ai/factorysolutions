@@ -175,7 +175,7 @@ def decode(encoded_img: str) -> np.ndarray:
     """
     img_original = base64.b64decode(encoded_img)
     img_as_np = np.frombuffer(img_original, dtype=np.uint8)
-    img = cv2.imdecode(img_as_np, cv2.IMREADH_UNCHANGED)
+    img = cv2.imdecode(img_as_np, cv2.IMREAD_UNCHANGED)
 
     return img
 
