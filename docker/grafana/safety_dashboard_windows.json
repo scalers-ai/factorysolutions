@@ -332,7 +332,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "grey"
+                "color": "grey",
+                "value": null
               },
               {
                 "color": "red",
@@ -500,6 +501,6 @@
   "timezone": "",
   "title": "Safety Dashboard - Windows",
   "uid": "EdgeUiWin",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
