@@ -73,8 +73,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -134,8 +133,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -199,8 +197,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -269,8 +266,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#000000c7",
-                "value": null
+                "color": "#000000c7"
               }
             ]
           },
@@ -337,6 +333,6 @@
   "timezone": "",
   "title": "Safety Dashboard - Linux",
   "uid": "zLQKpk8nk22",
-  "version": 5,
+  "version": 6,
   "weekStart": ""
 }
