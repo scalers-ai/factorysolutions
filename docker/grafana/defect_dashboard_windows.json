@@ -24,8 +24,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
-  "iteration": 1651496934126,
+  "id": 1,
+  "iteration": 1651498364549,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -35,17 +35,17 @@
         "uid": "grafana"
       },
       "gridPos": {
-        "h": 12,
-        "w": 11,
+        "h": 19,
+        "w": 13,
         "x": 0,
         "y": 0
       },
       "id": 4,
       "options": {
-        "content": "<html>\n  <head>\n    <title>Industrial Safety</title>\n  </head>\n  <body>\n     <div style=\"width: 100%; overflow: hidden;\">\n      <div style=\"width: 400px; height:400px; float: left;\">\n      <img src=\"http://localhost:5000/currentmodel\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n      </div>\n      <div style=\"width: 400px; height:400px; margin-left: 420px;\">\n      <img src=\"http://localhost:5000/explainmodel\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n      </div>\n      </div> \n  </body>\n</html>",
+        "content": "<html>\n  <head>\n    <title>Industrial Safety</title>\n  </head>\n  <body>\n     <div style=\"width: 100%; overflow: hidden;\">\n      <div style=\"width: 480px; height:480px; float: left;\">\n      <img src=\"http://172.22.252.51:5000/currentmodel\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n      </div>\n      <div style=\"width: 480px; height:480px; margin-left: 500px;\">\n      <img src=\"http://172.22.252.51:5000/explainmodel\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n      </div>\n      </div> \n  </body>\n</html>",
         "mode": "html"
       },
-      "pluginVersion": "8.4.6",
+      "pluginVersion": "8.5.1",
       "title": "Impeller Feed #1",
       "type": "text"
     },
@@ -79,9 +79,9 @@
       "format": "short",
       "graphId": "flowchart_42",
       "gridPos": {
-        "h": 17,
-        "w": 13,
-        "x": 11,
+        "h": 19,
+        "w": 11,
+        "x": 13,
         "y": 0
       },
       "id": 42,
@@ -334,9 +334,9 @@
       },
       "gridPos": {
         "h": 5,
-        "w": 11,
+        "w": 24,
         "x": 0,
-        "y": 12
+        "y": 19
       },
       "id": 40,
       "options": {
@@ -356,7 +356,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.6",
+      "pluginVersion": "8.5.1",
       "targets": [
         {
           "channel": "stream/telegraf/defect-detection-stream",
@@ -379,7 +379,7 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 35,
+  "schemaVersion": 36,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -482,6 +482,6 @@
   "timezone": "",
   "title": "Defect Detection - Windows",
   "uid": "RTGUILINUX",
-  "version": 2,
+  "version": 4,
   "weekStart": ""
 }
