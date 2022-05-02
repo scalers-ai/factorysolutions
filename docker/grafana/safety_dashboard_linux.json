@@ -117,7 +117,7 @@
           "refId": "A"
         }
       ],
-      "title": "People Detected",
+      "title": "Total People Detected",
       "transparent": true,
       "type": "stat"
     },
