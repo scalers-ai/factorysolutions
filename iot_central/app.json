@@ -1,85 +1,100 @@
 {
-    "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9;1",
+    "@id": "dtmi:factorysolutionscentral:factorysolutionscentraldevice;1",
     "@type": "Interface",
     "contents": [
         {
-            "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:stream;1",
+            "@id": "dtmi:factorysolutionscentral:factorysolutionscentraldevice:stream;1",
             "@type": "Telemetry",
             "displayName": {
-                "en": "Stream Type"
+                "en": "stream"
             },
             "name": "stream",
             "schema": "string"
         },
         {
-            "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:person_count;1",
+            "@id": "dtmi:factorysolutionscentral:factorysolutionscentraldevice:impeller_status;1",
             "@type": "Telemetry",
             "displayName": {
-                "en": "Person_Count"
+                "en": "impeller_status"
             },
-            "name": "person_count",
-            "schema": "double"
-        },
-        {
-            "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:violations;1",
-            "@type": "Telemetry",
-            "displayName": {
-                "en": "Violations"
-            },
-            "name": "violations",
-            "schema": "double"
-        },
-        {
-            "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:fps;1",
-            "@type": "Telemetry",
-            "displayName": {
-                "en": "FPS"
-            },
-            "name": "fps",
-            "schema": "double"
-        },
-        {
-            "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:target;1",
-            "@type": "Telemetry",
-            "displayName": {
-                "en": "Target Hardware"
-            },
-            "name": "target",
+            "name": "impeller_status",
             "schema": "string"
         },
         {
-            "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:impeller_status;1",
-            "@type": [
-                "Telemetry",
-                "Event"
-            ],
-            "displayName": {
-                "en": "Impeller_Status"
-            },
-            "name": "impeller_status",
-            "schema": "integer"
-        },
-        {
-            "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:accuracy;1",
+            "@id": "dtmi:factorysolutionscentral:factorysolutionscentraldevice:accuracy;1",
             "@type": "Telemetry",
             "displayName": {
-                "en": "Accuracy"
+                "en": "accuracy"
             },
             "name": "accuracy",
             "schema": "double"
         },
         {
-            "@id": "dtmi:industrialsafetyanddefectdetectionapp:r5ltef9mn9:defects;1",
+            "@id": "dtmi:factorysolutionscentral:factorysolutionscentraldevice:defects;1",
             "@type": "Telemetry",
             "displayName": {
-                "en": "Defects"
+                "en": "defects"
             },
             "name": "defects",
+            "schema": "double"
+        },
+        {
+            "@id": "dtmi:factorysolutionscentral:factorysolutionscentraldevice:target;1",
+            "@type": "Telemetry",
+            "displayName": {
+                "en": "target"
+            },
+            "name": "target",
+            "schema": "string"
+        },
+        {
+            "@id": "dtmi:factorysolutionscentral:factorysolutionscentraldevice:fps;1",
+            "@type": "Telemetry",
+            "displayName": {
+                "en": "fps"
+            },
+            "name": "fps",
+            "schema": "double"
+        },
+        {
+            "@id": "dtmi:factorysolutionscentral:factorysolutionscentraldevice:explainedimage;1",
+            "@type": "Telemetry",
+            "displayName": {
+                "en": "explainedimage"
+            },
+            "name": "explainedimage",
+            "schema": "string"
+        },
+        {
+            "@id": "dtmi:factorysolutionscentral:factorysolutionscentraldevice:image;1",
+            "@type": "Telemetry",
+            "displayName": {
+                "en": "image"
+            },
+            "name": "image",
+            "schema": "string"
+        },
+        {
+            "@id": "dtmi:factorysolutionscentral:factorysolutionscentraldevice:person_count;1",
+            "@type": "Telemetry",
+            "displayName": {
+                "en": "person_count"
+            },
+            "name": "person_count",
+            "schema": "double"
+        },
+        {
+            "@id": "dtmi:factorysolutionscentral:factorysolutionscentraldevice:violations;1",
+            "@type": "Telemetry",
+            "displayName": {
+                "en": "violations"
+            },
+            "name": "violations",
             "schema": "double"
         }
     ],
     "displayName": {
-        "en": "r5ltef9mn9"
+        "en": "factorysolutions-centraldevice"
     },
     "@context": [
         "dtmi:iotcentral:context;2",
