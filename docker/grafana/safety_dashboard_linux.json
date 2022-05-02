@@ -3,7 +3,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -21,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -32,17 +35,17 @@
       },
       "description": "",
       "gridPos": {
-        "h": 18,
-        "w": 14,
+        "h": 24,
+        "w": 18,
         "x": 0,
         "y": 0
       },
       "id": 5,
       "options": {
-        "content": "<html>\n  <head>\n    <title>Industrial Safety</title>\n  </head>\n  <body>\n    <img src=\"http://localhost:5000/industrialsafety\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n  </body>\n</html>",
+        "content": "<html>\n  <head>\n    <title>Industrial Safety</title>\n  </head>\n  <body>\n    <img src=\"http://172.22.252.51:5000/industrialsafety\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n  </body>\n</html>",
         "mode": "html"
       },
-      "pluginVersion": "8.4.6",
+      "pluginVersion": "8.5.1",
       "targets": [
         {
           "datasource": {
@@ -82,9 +85,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 14,
+        "h": 5,
+        "w": 3,
+        "x": 18,
         "y": 0
       },
       "id": 41,
@@ -102,7 +105,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.6",
+      "pluginVersion": "8.5.1",
       "targets": [
         {
           "datasource": {
@@ -113,7 +116,7 @@
           "refId": "A"
         }
       ],
-      "title": "People Detected",
+      "title": "Total People Detected",
       "transparent": true,
       "type": "stat"
     },
@@ -146,10 +149,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 6,
-        "x": 14,
-        "y": 6
+        "h": 5,
+        "w": 3,
+        "x": 21,
+        "y": 0
       },
       "id": 42,
       "options": {
@@ -166,7 +169,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.6",
+      "pluginVersion": "8.5.1",
       "targets": [
         {
           "datasource": {
@@ -197,7 +200,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "grey"
               },
               {
                 "color": "red",
@@ -209,10 +212,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 14,
-        "y": 12
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 5
       },
       "id": 8,
       "options": {
@@ -229,7 +232,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.6",
+      "pluginVersion": "8.5.1",
       "targets": [
         {
           "channel": "stream/telegraf/industrial-safety-stream",
@@ -275,10 +278,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 17,
-        "y": 12
+        "h": 13,
+        "w": 6,
+        "x": 18,
+        "y": 11
       },
       "id": 21,
       "options": {
@@ -296,7 +299,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.4.6",
+      "pluginVersion": "8.5.1",
       "targets": [
         {
           "channel": "stream/telegraf/safety_fps",
@@ -319,7 +322,7 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 35,
+  "schemaVersion": 36,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -333,6 +336,6 @@
   "timezone": "",
   "title": "Safety Dashboard - Linux",
   "uid": "zLQKpk8nk22",
-  "version": 6,
+  "version": 3,
   "weekStart": ""
 }
