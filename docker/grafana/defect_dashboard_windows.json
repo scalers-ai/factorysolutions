@@ -25,7 +25,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1651551850780,
+  "iteration": 1651553884332,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -296,6 +296,26 @@
         "type": "datasource",
         "uid": "grafana"
       },
+      "gridPos": {
+        "h": 10,
+        "w": 13,
+        "x": 0,
+        "y": 14
+      },
+      "id": 44,
+      "options": {
+        "content": "<html>\n  <body>\n    <video style=\"width:100%;height:100%;align:top;\" loop autoplay>\n      <source src=\"http://172.22.252.51:5000/static/impeller_conveyor.mp4\" type=\"video/mp4\">\n    </video>\n  </body>\n</html>\n",
+        "mode": "html"
+      },
+      "pluginVersion": "8.5.1",
+      "title": "Conveyer View",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -482,6 +502,6 @@
   "timezone": "",
   "title": "Defect Detection - Windows",
   "uid": "RTGUILINUX",
-  "version": 6,
+  "version": 10,
   "weekStart": ""
 }
