@@ -25,7 +25,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 2,
-  "iteration": 1651553884332,
+  "iteration": 1651553884454,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -79,7 +79,7 @@
       "format": "short",
       "graphId": "flowchart_42",
       "gridPos": {
-        "h": 19,
+        "h": 11,
         "w": 11,
         "x": 13,
         "y": 0
@@ -297,14 +297,14 @@
         "uid": "grafana"
       },
       "gridPos": {
-        "h": 10,
-        "w": 13,
-        "x": 0,
-        "y": 14
+        "h": 13,
+        "w": 11,
+        "x": 13,
+        "y": 11
       },
       "id": 44,
       "options": {
-        "content": "<html>\n  <body>\n    <video style=\"width:100%;height:100%;align:top;\" loop autoplay>\n      <source src=\"http://172.22.252.51:5000/static/impeller_conveyor.mp4\" type=\"video/mp4\">\n    </video>\n  </body>\n</html>\n",
+        "content": "<html>\n  <body>\n    <div style=\"overflow: hidden; width: 100%; height: 100%;\">\n      <video style=\"width:100%;height:auto;\" loop autoplay>\n        <source src=\"http://172.22.252.51:5000/static/impeller_conveyor.mp4\" type=\"video/mp4\">\n      </video>\n    </div>\n  </body>\n</html>\n",
         "mode": "html"
       },
       "pluginVersion": "8.5.1",
@@ -353,10 +353,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 11,
-        "x": 13,
-        "y": 19
+        "h": 10,
+        "w": 13,
+        "x": 0,
+        "y": 14
       },
       "id": 40,
       "options": {
@@ -502,6 +502,6 @@
   "timezone": "",
   "title": "Defect Detection - Windows",
   "uid": "RTGUILINUX",
-  "version": 10,
+  "version": 12,
   "weekStart": ""
 }
