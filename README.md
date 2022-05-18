@@ -8,6 +8,8 @@
 3. Azure Account with active suscription. Follow [this documentation](https://azure.microsoft.com/en-us/free/
 ) for know more about Creating Azure Account.
 
+# View the video tutorials here
+[Youtube Tutorials](https://www.youtube.com/channel/UCAtxB_-2wHiJrfW4d7cd3Pw/featured)
 
 # Setup
 ## Setting up Development machine
