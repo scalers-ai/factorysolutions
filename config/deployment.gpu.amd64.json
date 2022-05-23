@@ -5,7 +5,7 @@
         "modules": {
           "influxdb": {
             "settings": {
-              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/influxdb:latest",
+              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/influxdb:latest-amd64",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"8086/tcp\":[{\"HostPort\":\"8086\"}]}}}"
             },
             "type": "docker",
@@ -16,7 +16,7 @@
           },
           "grafana": {
             "settings": {
-              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/grafana:latest",
+              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/grafana:latest-amd64",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"3000/tcp\":[{\"HostPort\":\"3000\"}]}}}"
             },
             "type": "docker",
@@ -27,7 +27,7 @@
           },
           "simplertspserver": {
             "settings": {
-              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/simplertspserver:latest",
+              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/simplertspserver:latest-amd64",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"8554/tcp\":[{\"HostPort\":\"8554\"}],\"8888/tcp\":[{\"HostPort\":\"8888\"}]}}}"
             },
             "type": "docker",
@@ -38,7 +38,7 @@
           },
           "mosquittoserver": {
             "settings": {
-              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/mosquitto:latest",
+              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/mosquitto:latest-amd64",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"1883/tcp\":[{\"HostPort\":\"1883\"}],\"9001/tcp\":[{\"HostPort\":\"9001\"}]}}}"
             },
             "type": "docker",
@@ -49,7 +49,7 @@
           },
           "opcuaserver": {
             "settings": {
-              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/opcuaserver:latest",
+              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/opcuaserver:latest-amd64",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"4840/tcp\":[{\"HostPort\":\"4840\"}]}}}"
             },
             "type": "docker",
@@ -60,7 +60,7 @@
           },
           "telegraf": {
             "settings": {
-              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/telegraf:latest",
+              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/telegraf:latest-amd64",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5100/tcp\":[{\"HostPort\":\"5100\"}]}}}"
             },
             "type": "docker",
@@ -71,7 +71,7 @@
           },
           "industrial-safety": {
             "settings": {
-              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/industrial-safety:latest",
+              "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/industrial-safety:latest-amd64",
               "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5000/tcp\":[{\"HostPort\":\"5000\"}]}, \"CapAdd\":[\"CAP_SYS_ADMIN\"],\"Binds\":[\"/usr/lib/wsl:/usr/lib/wsl\"],\"Devices\":[{\"PathOnHost\":\"/dev/dxg\",\"PathInContainer\":\"/dev/dxg\",\"CgroupPermissions\":\"rwm\"}]}}"
             },
             "type": "docker",
@@ -80,8 +80,17 @@
               "DEFECT_TARGET_HARDWARE": {
                 "value": "GPU"
               },
-              "SAFETY_TARGET_HARDWARE": {
-                "value": "GPU"
+              "IOTHUB_DEVICE_DPS_ENDPOINT": {
+                "value": "global.azure-devices-provisioning.net"
+              },
+              "IOTHUB_DEVICE_DPS_ID_SCOPE": {
+                "value": "0ne005B40A0"
+              },
+              "IOTHUB_DEVICE_DPS_DEVICE_ID": {
+                "value": "demodevice1"
+              },
+              "IOTHUB_DEVICE_DPS_DEVICE_KEY": {
+                "value": "Vw4czhkWni1r/QcfmYEog3FT9TVe8lv2p7pI8iiViyM="
               }
             },
             "status": "running",

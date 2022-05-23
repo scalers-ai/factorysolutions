@@ -1,0 +1,15 @@
+{
+  "$schema-version": "0.0.1",
+  "description": "",
+  "image": {
+    "repository": "$CONTAINER_REGISTRY_USERNAME.azurecr.io/mosquitto",
+    "tag": {
+      "version": "latest",
+      "platforms": {
+        "amd64": "./Dockerfile.mosquitto"
+      }
+    },
+    "buildOptions": [],
+    "contextPath": "./"
+  }
+}

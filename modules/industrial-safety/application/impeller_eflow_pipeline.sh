@@ -4,25 +4,25 @@ set -e
 
 SCRIPTDIR="$(dirname "$(realpath "$0")")"
 
-#overwrite from what is set in the .env file since this will be based on whether user wants to deploy of GPU or CPU.
-DEVICE=${1:-CPU}
+RTSPHOST=${1:-localhost}
+RTSPPORT=${2:-8554}
+MOSQUITTOSERVER=${3:-mosquittoserver}
+IMPELLERVIDEOINPUT=${4}
+INDUSTRIALSAFETYVIDEOINPUT=${5}
+DEFECTDETECTION_FEED_NAME=${6}
+INDUSTRIALSAFETY_FEED_NAME=${7}
+INFLUX_ORG=${8}
+INFLUX_TOKEN=${9}
+INFLUX_BUCKET=${10}
+INFLUX_HOST=${11}
+INFLUX_PORT=${12}
 
-RTSPHOST=${2:-localhost}
-RTSPPORT=${3:-8554}
-MOSQUITTOSERVER=${4:-mosquittoserver}
-IMPELLERVIDEOINPUT=${5}
-INDUSTRIALSAFETYVIDEOINPUT=${6}
-DEFECTDETECTION_FEED_NAME=${7}
-INDUSTRIALSAFETY_FEED_NAME=${8}
-INFLUX_ORG=${9}
-INFLUX_TOKEN=${10}
-INFLUX_BUCKET=${11}
-INFLUX_HOST=${12}
-INFLUX_PORT=${13}
-IOTHUB_DEVICE_ENDPOINT=${14}
-IOTHUB_DEVICE_SCOPE=${15}
-IOTHUB_DEVICE_KEY=${16}
-IOTHUB_DEVICE_ID=${17}
+# These are initialized from the eflow deployment manifest from the .env entries.
+DEVICE=${DEFECT_TARGET_HARDWARE}
+IOTHUB_DEVICE_ENDPOINT=${IOTHUB_DEVICE_DPS_ENDPOINT}
+IOTHUB_DEVICE_SCOPE=${IOTHUB_DEVICE_DPS_ID_SCOPE}
+IOTHUB_DEVICE_KEY=${IOTHUB_DEVICE_DPS_DEVICE_KEY}
+IOTHUB_DEVICE_ID=${IOTHUB_DEVICE_DPS_DEVICE_ID}
 
 IMPELLER_DEFECT_MODEL_PATH=/application/models/impeller-defect-custom/saved_model.xml
 IMPELLER_DEFECT_MODEL_PROC_PATH=/application/models/impeller_model.json
@@ -68,7 +68,6 @@ gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$INDUSTRIALSAFETY
 
 echo ${PIPELINE2}
 tmux new -d ${PIPELINE2}
-
 
 sleep infinity
 

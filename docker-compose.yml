@@ -3,7 +3,8 @@ version: '3.5'
 services:
   influxdb:
     build:
-      context: ./docker/influxdb
+      context: modules/influxdb
+      dockerfile: Dockerfile.influxdb
     image: industrialsafetyanddefectdetectionregistry.azurecr.io/influxdb:latest
     hostname: influxdb
     ports:
@@ -11,7 +12,8 @@ services:
 
   grafana:
     build:
-      context: ./docker/grafana
+      context: modules/grafana
+      dockerfile: Dockerfile.grafana
     image: industrialsafetyanddefectdetectionregistry.azurecr.io/grafana:latest
     links:
       - influxdb
@@ -24,7 +26,8 @@ services:
 
   simplertspserver:
     build:
-      context: ./docker/simplertsp
+      context: modules/simplertsp
+      dockerfile: Dockerfile.simplertsp
     image: industrialsafetyanddefectdetectionregistry.azurecr.io/simplertspserver:latest
     ports:
       - '8554:8554'
@@ -32,7 +35,8 @@ services:
 
   mosquittoserver:
     build:
-      context: ./docker/mosquitto
+      context: modules/mosquitto
+      dockerfile: Dockerfile.mosquitto
     image: industrialsafetyanddefectdetectionregistry.azurecr.io/mosquitto:latest
     ports:
       - '1883:1883'
@@ -40,7 +44,8 @@ services:
 
   opcua:
     build:
-      context: ./docker/opcua
+      context: modules/opcua
+      dockerfile: Dockerfile.opcua
     image: industrialsafetyanddefectdetectionregistry.azurecr.io/opcuaserver:latest
     hostname: opcuaserver
     ports:
@@ -48,7 +53,8 @@ services:
 
   telegraf:
     build:
-      context: ./docker/telegraf
+      context: modules/telegraf
+      dockerfile: Dockerfile.telegraf
     image: industrialsafetyanddefectdetectionregistry.azurecr.io/telegraf:latest
     restart: on-failure
     links:
@@ -63,10 +69,17 @@ services:
 
   industrial-safety:
     build:
-      context: docker/openvino
+      context: modules/industrial-safety
+      dockerfile: Dockerfile.openvino
     image: industrialsafetyanddefectdetectionregistry.azurecr.io/industrial-safety:latest
     restart: on-failure
     container_name: industrial-safety
+    environment:
+      - DEFECT_TARGET_HARDWARE=$DEFECT_TARGET_HARDWARE
+      - IOTHUB_DEVICE_DPS_ENDPOINT=$IOTHUB_DEVICE_DPS_ENDPOINT
+      - IOTHUB_DEVICE_DPS_ID_SCOPE=$IOTHUB_DEVICE_DPS_ID_SCOPE
+      - IOTHUB_DEVICE_DPS_DEVICE_ID=$IOTHUB_DEVICE_DPS_DEVICE_ID
+      - IOTHUB_DEVICE_DPS_DEVICE_KEY=$IOTHUB_DEVICE_DPS_DEVICE_KEY
     ports:
       - '5000:5000'
     depends_on:

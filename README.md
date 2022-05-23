@@ -76,7 +76,7 @@ Complete the following steps to setup the deployment machine.
 ## Building and Pushing Docker images
 
 1. Open the cloned repo in the Visual Studio Code using **File > Open Folder**
-2. Expand the **src** folder.
+2. Expand the **FACTORYSOLUTIONS** folder.
 3. Update the **.env** file with the following details
 
     | Variable | Description | Default |
@@ -92,13 +92,11 @@ Complete the following steps to setup the deployment machine.
 
 4. Building and pushing the solutions
     
-    * For **CPU**, right click on the `src/deployment.template.json` and then select **Build and Push IoT Edge Solution**.
-    * For **GPU**, right click on the `src/deployment.template.gpu.json` and then select **Build and Push IoT Edge Solution**.
-    * Note: By default the docker build assumes target hardware as CPU. If you want to change please also replace the word `CPU` 
-    by `GPU` in the `impeller_elow_pipeline.sh` as well. 
+    * For **CPU**, right click on the `deployment.template.json` and then select **Build and Push IoT Edge Solution**.
+    * For **GPU**, right click on the `deployment.template.gpu.json` and then select **Build and Push IoT Edge Solution**.
     
     The above step generates the deployment manifest file namely `deployment.amd64.json` or `deployment.gpu.amd64.json` 
-    based on whether CPU or GPU template was chosen above.
+    based on whether CPU or GPU template was chosen above in the **config** folder.
 
 ## Deploying the Solution 
 Continue to deploy the solution to your deployment machine once all the module are build and pushed.

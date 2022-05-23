@@ -6,7 +6,7 @@
           "modules": {
             "influxdb": {
               "settings": {
-                "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/influxdb:latest",
+                "image": "${MODULES.influxdb}",
                 "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"8086/tcp\":[{\"HostPort\":\"8086\"}]}}}"
               },
               "type": "docker",
@@ -17,7 +17,7 @@
             },
             "grafana": {
               "settings": {
-                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/grafana:latest",
+                  "image": "${MODULES.grafana}",
                   "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"3000/tcp\":[{\"HostPort\":\"3000\"}]}}}"
               },
               "type": "docker",
@@ -28,7 +28,7 @@
             },
             "simplertspserver": {
               "settings": {
-                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/simplertspserver:latest",
+                  "image": "${MODULES.simplertsp}",
                   "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"8554/tcp\":[{\"HostPort\":\"8554\"}],\"8888/tcp\":[{\"HostPort\":\"8888\"}]}}}"
               },
               "type": "docker",
@@ -39,7 +39,7 @@
             },
             "mosquittoserver": {
               "settings": {
-                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/mosquitto:latest",
+                  "image": "${MODULES.mosquitto}",
                   "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"1883/tcp\":[{\"HostPort\":\"1883\"}],\"9001/tcp\":[{\"HostPort\":\"9001\"}]}}}"
               },
               "type": "docker",
@@ -50,7 +50,7 @@
             },
             "opcuaserver": {
               "settings": {
-                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/opcuaserver:latest",
+                  "image": "${MODULES.opcua}",
                   "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"4840/tcp\":[{\"HostPort\":\"4840\"}]}}}"
               },
               "type": "docker",
@@ -61,7 +61,7 @@
             },
             "telegraf": {
               "settings": {
-                "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/telegraf:latest",
+                "image": "${MODULES.telegraf}",
                 "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5100/tcp\":[{\"HostPort\":\"5100\"}]}}}"
               },
               "type": "docker",
@@ -72,7 +72,7 @@
             },
             "industrial-safety": {
               "settings": {
-                  "image": "industrialsafetyanddefectdetectionregistry.azurecr.io/industrial-safety:latest",
+                  "image": "${MODULES.industrial-safety}",
                   "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"5000/tcp\":[{\"HostPort\":\"5000\"}]}, \"CapAdd\":[\"CAP_SYS_ADMIN\"],\"Binds\":[\"/usr/lib/wsl:/usr/lib/wsl\"],\"Devices\":[{\"PathOnHost\":\"/dev/dxg\",\"PathInContainer\":\"/dev/dxg\",\"CgroupPermissions\":\"rwm\"}]}}"
               },
               "type": "docker",
@@ -81,8 +81,17 @@
                 "DEFECT_TARGET_HARDWARE":{
                     "value": "$DEFECT_TARGET_HARDWARE"
                 },
-                "SAFETY_TARGET_HARDWARE":{
-                    "value": "$SAFETY_TARGET_HARDWARE"
+                "IOTHUB_DEVICE_DPS_ENDPOINT": {
+                    "value": "$IOTHUB_DEVICE_DPS_ENDPOINT"
+                },
+                "IOTHUB_DEVICE_DPS_ID_SCOPE": {
+                    "value": "$IOTHUB_DEVICE_DPS_ID_SCOPE"
+                },
+                "IOTHUB_DEVICE_DPS_DEVICE_ID": {
+                    "value": "$IOTHUB_DEVICE_DPS_DEVICE_ID"
+                },
+                "IOTHUB_DEVICE_DPS_DEVICE_KEY": {
+                    "value": "$IOTHUB_DEVICE_DPS_DEVICE_KEY"
                 }
               },
               "status": "running",

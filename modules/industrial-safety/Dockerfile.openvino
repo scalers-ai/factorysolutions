@@ -23,4 +23,4 @@ RUN python3 -m pip install flask influxdb-client paho-mqtt opencv-python shap op
 
 EXPOSE 5000
 
-CMD ["bash", "-c", "source /opt/intel/openvino/bin/setupvars.sh && cd /application && ./impeller_eflow_pipeline.sh GPU simplertspserver 8554 mosquittoserver /application/sample_videos/impeller.mp4 /application/sample_videos/edited_safety_clip.mp4 defectdetection industrialsafety acmeindustries defect_tracking Industrial_Detection_Safety influxdb 8086 global.azure-devices-provisioning.net 0ne005B40A0 Vw4czhkWni1r/QcfmYEog3FT9TVe8lv2p7pI8iiViyM= demodevice1"]
+CMD source /opt/intel/openvino_2021/bin/setupvars.sh && ./impeller_eflow_pipeline.sh simplertspserver 8554 mosquittoserver /application/sample_videos/impeller.mp4 /application/sample_videos/edited_safety_clip.mp4 defectdetection industrialsafety acmeindustries defect_tracking Industrial_Detection_Safety influxdb 8086
