@@ -83,8 +83,7 @@ Complete the following steps to setup the deployment machine.
     | --- | --- | --- |
     | `CONTAINER_REGISTRY_USERNAME` | Azure Container Registry Username. Refer step [Create Azure Container Registry](#container-registry) |  |
     | `CONTAINER_REGISTRY_PASSWORD` |  Azure Continer Registry Password. Refer step [Create Azure Container Registry](#container-registry) |  |
-    | `DEFECT_TARGET_HARDWARE` | Defect Detection Model Target Hardware. Avilable options: CPU/GPU | `CPU` |
-    | `SAFETY_TARGET_HARDWARE` | Safety Person Detection Model Target Hardware. Available options: CPU/GPU | `CPU` |
+    | `DEFECT_TARGET_HARDWARE` | The Model Target Hardware. Avilable options: CPU/GPU | `CPU` |
     | `IOTHUB_DEVICE_DPS_ENDPOINT` | Azure IoT Device Provision Service endpoint | `global.azure-devices-provisioning.net` |
     | `IOTHUB_DEVICE_DPS_ID_SCOPE` | IoT Central Device ID Scope. Refer [Creating Azure IoT Central Device](#central_device)| | 
     | `IOTHUB_DEVICE_DPS_DEVICE_ID` | IoT Central Device ID. Refer [Creating Azure IoT Central Device](#central_device) | |
