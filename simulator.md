@@ -31,7 +31,7 @@
             ```
 2. Setting up Telegraf on Windows
 
-    1. Open a **Command Prompt** as an **Administrator**.
+    1. Open a **Command Prompt** as an **Administrator** You also must have local admin rights on the computer.
 
     2. To install and setup Telegraf on windows, run the `simulator_configs/setup_telegraf.bat` file
 

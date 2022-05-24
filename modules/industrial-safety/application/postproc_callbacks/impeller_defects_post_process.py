@@ -50,21 +50,26 @@ class DefectDetection:
     def set_opcua_values(self, violation: int, accuracy: float, fps: float) -> None:
         """Set inference results to opcua variables
 
-        :param weld_class: Weld Class detected
+        :param violation detected
         :param prob: Probabilty of the class detected
         :param fps: Frame per second of the model
 
         :returns None
         """
         # get variables
-        defect_detections = self.client.get_node("ns=2;i=4")
-        defect_accuracy = self.client.get_node("ns=2;i=5")
-        defect_fps = self.client.get_node("ns=2;i=6")
+        defect_detections = self.client.get_node("ns=2;i=5")
+        defect_accuracy = self.client.get_node("ns=2;i=6")
+        defect_fps = self.client.get_node("ns=2;i=7")
+        defect_target_hardware = self.client.get_node("ns=2;i=8")
 
         # set values to the variables
         defect_detections.set_value(violation)
         defect_accuracy.set_value(accuracy)
         defect_fps.set_value(fps)
+        if self.get_target_hardware() == 'CPU':
+            defect_target_hardware.set_value(0.0)
+        else:
+            defect_target_hardware.set_value(1.0)
 
     def get_target_hardware(self):
         """Read target hardware of the pipeline from

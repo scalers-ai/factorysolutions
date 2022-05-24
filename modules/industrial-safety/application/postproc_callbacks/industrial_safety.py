@@ -49,17 +49,22 @@ class TripWire:
         # get variables
         safety_violation = self.client.get_node("ns=2;i=2")
         safety_fps = self.client.get_node("ns=2;i=3")
+        safety_target_hardware = self.client.get_node("ns=2;i=4")
 
         # set values to the variables
         safety_violation.set_value(violation)
         safety_fps.set_value(fps)
+        if self.get_target_hardware() == 'CPU':
+            safety_target_hardware.set_value(0.0)
+        else:
+            safety_target_hardware.set_value(1.0)
 
     def get_target_hardware(self):
         """Read target hardware of the pipeline from
         TARGET environment variable
         """
         try:
-            target = os.environ['SAFETY_TARGET_HARDWARE']
+            target = os.environ['DEFECT_TARGET_HARDWARE']
         except Exception:
             target = 'CPU'
 
