@@ -1,0 +1,6 @@
+{
+    "name": "TestData DB",
+    "type": "testdata",
+    "access":"proxy",
+    "uid": "testdatauid"
+  }

@@ -8,8 +8,5 @@ COPY dashboard.yml /etc/grafana/provisioning/dashboards/datasource.yml
 
 COPY defect_dashboard_linux.json /etc/dashboards/defect_dashboard_linux.json
 COPY safety_dashboard_linux.json /etc/dashboards/safety_dashboard_linux.json
-COPY defect_dashboard_windows.json /etc/dashboards/defect_dashboard_windows.json
-COPY safety_dashboard_windows.json /etc/dashboards/safety_dashboard_windows.json
-
 
 EXPOSE 3000
