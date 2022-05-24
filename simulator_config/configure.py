@@ -118,9 +118,7 @@ def main():
     configure_grafana(eflow_ip, json_path, grafana_ip)
 
     # configure telegraf config file
-    config_path = "C:\Program Files\InfluxData\\telegraf"
-    update_telegraf(eflow_ip, config_path)
-
+    update_telegraf(eflow_ip, json_path)
 
 if __name__ == "__main__":
     main()
