@@ -1,0 +1,20 @@
+apiVersion: 1
+
+datasources:
+  - name: Industrial_Detection_Safety
+    access: proxy
+    editable: true
+    is_default: true
+    type: influxdb
+    url: http://EFLOWIP:8086
+    org_id: 1
+    version: 1
+    database: Industrial_Detection_Safety
+    basicAuth: false
+    jsonData:
+      defaultBucket: Industrial_Detection_Safety
+      httpMode: POST
+      organization: acmeindustries
+      version: Flux
+    secureJsonData:
+      token: defect_tracking
