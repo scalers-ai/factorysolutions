@@ -44,7 +44,7 @@
         "content": "<html>\n  <head>\n    <title>Industrial Safety</title>\n  </head>\n  <body>\n    <img src=\"http://EFLOWIP:5000/industrialsafety\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n  </body>\n</html>",
         "mode": "html"
       },
-      "pluginVersion": "8.5.1",
+      "pluginVersion": "8.5.3",
       "title": "Industrial Safety Tripwire Feed #1",
       "type": "text"
     },
@@ -327,7 +327,22 @@
           "color": {
             "mode": "thresholds"
           },
-          "mappings": [],
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "index": 0,
+                  "text": "CPU"
+                },
+                "1": {
+                  "index": 1,
+                  "text": "GPU"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "noValue": "CPU",
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -360,15 +375,15 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^target \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
+          "fields": "/^safetyhardware telegraf$/",
           "values": false
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.1",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
-          "channel": "stream/telegraf/defect-detection-stream",
+          "channel": "stream/telegraf/safety_hardware",
           "datasource": {
             "name": "InfluxDB",
             "type": "influxdb",
@@ -377,7 +392,7 @@
           "filter": {
             "fields": [
               "time",
-              "target"
+              "safetyhardware"
             ]
           },
           "groupBy": [],
@@ -450,7 +465,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.1",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
           "channel": "stream/telegraf/safety_fps",
@@ -501,7 +516,6 @@
   "timezone": "",
   "title": "Safety Dashboard - Windows",
   "uid": "EdgeUiWin",
-  "version": 6,
+  "version": 3,
   "weekStart": ""
 }
-

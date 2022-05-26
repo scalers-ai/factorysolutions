@@ -24,8 +24,8 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
-  "iteration": 1651578240133,
+  "id": 3,
+  "iteration": 1653539396489,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -45,7 +45,7 @@
         "content": "<html>\n  <head>\n    <title>Industrial Safety</title>\n  </head>\n  <body>\n     <div style=\"width: 100%; overflow: hidden;\">\n      <div style=\"width: 480px; height:480px; float: left;\">\n      <img src=\"http://EFLOWIP:5000/currentmodel\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n      </div>\n      <div style=\"width: 480px; height:480px; margin-left: 500px;\">\n      <img src=\"http://EFLOWIP:5000/explainmodel\" style=\"align:center;text-align:center;display:block;width:100%;height:100%\">\n      </div>\n      </div> \n  </body>\n</html>",
         "mode": "html"
       },
-      "pluginVersion": "8.5.1",
+      "pluginVersion": "8.5.3",
       "title": "Impeller Feed #1",
       "type": "text"
     },
@@ -307,7 +307,7 @@
         "content": "<html>\n  <body>\n      <video style=\"width:100%;height:100%;\" loop autoplay>\n        <source src=\"http://EFLOWIP:5000/static/impeller_conveyor.mp4\" type=\"video/mp4\">\n      </video>\n  </body>\n</html>\n",
         "mode": "html"
       },
-      "pluginVersion": "8.5.1",
+      "pluginVersion": "8.5.3",
       "title": "Conveyer View",
       "type": "text"
     },
@@ -368,7 +368,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^impeller_status_n \\{host=\"telegraf\", stream=\"defectdetection\"\\}$/",
+          "fields": "/^count telegraf$/",
           "values": false
         },
         "text": {
@@ -376,10 +376,10 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "8.5.1",
+      "pluginVersion": "8.5.3",
       "targets": [
         {
-          "channel": "stream/telegraf/defect-detection-stream",
+          "channel": "stream/telegraf/defect_detection",
           "datasource": {
             "type": "datasource",
             "uid": "grafana"
@@ -387,7 +387,7 @@
           "filter": {
             "fields": [
               "time",
-              "impeller_status_n"
+              "count"
             ]
           },
           "queryType": "measurements",
@@ -502,6 +502,6 @@
   "timezone": "",
   "title": "Defect Detection - Windows",
   "uid": "RTGUILINUX",
-  "version": 13,
+  "version": 3,
   "weekStart": ""
 }
