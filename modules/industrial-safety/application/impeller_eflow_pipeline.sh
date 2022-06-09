@@ -54,20 +54,27 @@ echo GST_PLUGIN_PATH=${GST_PLUGIN_PATH}
 
 export GST_DEBUG=1
 
-PIPELINE2="gst-launch-1.0 \
-rtspsrc location=rtsp://$RTSPHOST:$RTSPPORT/$DEFECTDETECTION_FEED_NAME ! decodebin  ! videoconvert ! video/x-raw,format=BGRx ! \
-gvapython module=$INFERENCE_TIME_SCRIPT class=InferenceTime ! \
-gvaclassify model=$IMPELLER_DEFECT_MODEL_PATH model-proc=$IMPELLER_DEFECT_MODEL_PROC_PATH device=$DEVICE inference-region=full-frame ! \
-gvapython module=$DEFECT_DETECTION_SCRIPT_PATH class=DefectDetection \
-rtspsrc location=rtsp://$RTSPHOST:$RTSPPORT/$INDUSTRIALSAFETY_FEED_NAME ! decodebin  ! videoconvert ! video/x-raw,format=BGRx ! \
-gvapython module=$INFERENCE_TIME_SCRIPT class=InferenceTime ! \
-gvadetect model=$INDUSTRIAL_SAFETY_MODEL_PATH device=$DEVICE inference-interval=1 ! \
-gvapython module=$INDUSTRIAL_SAFETY_SCRIPT_PATH class=TripWire ! \
-gvametaconvert format=json add-tensor-data=true ! \
-gvametapublish method=mqtt address=$MOSQUITTOSERVER:1883 topic=$INDUSTRIALSAFETY_FEED_NAME"
+runPipeLine() {
+  gst-launch-1.0 \
+    rtspsrc location=rtsp://${RTSPHOST}:${RTSPPORT}/${DEFECTDETECTION_FEED_NAME} ! decodebin  ! videoconvert ! video/x-raw,format=BGRx ! \
+    gvapython module=${INFERENCE_TIME_SCRIPT} class=InferenceTime ! \
+    gvaclassify model=${IMPELLER_DEFECT_MODEL_PATH} model-proc=${IMPELLER_DEFECT_MODEL_PROC_PATH} device=${DEVICE} inference-region=full-frame ! \
+    gvapython module=${DEFECT_DETECTION_SCRIPT_PATH} class=DefectDetection \
+    rtspsrc location=rtsp://${RTSPHOST}:${RTSPPORT}/${INDUSTRIALSAFETY_FEED_NAME} ! decodebin  ! videoconvert ! video/x-raw,format=BGRx ! \
+    gvapython module=${INFERENCE_TIME_SCRIPT} class=InferenceTime ! \
+    gvadetect model=${INDUSTRIAL_SAFETY_MODEL_PATH} device=${DEVICE} inference-interval=1 ! \
+    gvapython module=${INDUSTRIAL_SAFETY_SCRIPT_PATH} class=TripWire ! \
+    gvametaconvert format=json add-tensor-data=true ! \
+    gvametapublish method=mqtt address=${MOSQUITTOSERVER}:1883 topic=${INDUSTRIALSAFETY_FEED_NAME}
 
-echo ${PIPELINE2}
-tmux new -d ${PIPELINE2}
+return 1
+}
+
+until runPipeLine;
+do
+    echo 'Restarting pipeline'
+    sleep 1
+done
 
 sleep infinity
 
