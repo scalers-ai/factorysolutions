@@ -1,7 +1,7 @@
 # Industrial Safety and Impeller Defect Detection Setup Guide
 
 # Prerequisites
-1. An development edge machine with Ubuntu/WSL2.
+1. A development edge machine with Ubuntu/WSL2.
 2. A deployment machine with
     * Windows 10/11 (Pro, Enterprise, IoT Enterprise). Build greater than or equal to 19044.
     * Minimum of Intel® Core™ i7 processor (with Intel ® Virtualization Technology and iGPU) with 6th Gen or greater.
